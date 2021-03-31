@@ -34,7 +34,7 @@ RewriteRule ^index.php$               doku.php
 ## Not all installations will require the following line.  If you do,
 ## change "/dokuwiki" to the path to your dokuwiki directory relative
 ## to your document root.
-RewriteBase /.
+RewriteBase /
 
 ## If you enable DokuWikis XML-RPC interface, you should consider to
 ## restrict access to it over HTTPS only! Uncomment the following two
