@@ -59,6 +59,8 @@ if ($rev < 1){
     $rev = (int)$INFO["lastmod"];
 }
 
+
+
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo hsc($conf["lang"]); ?>" lang="<?php echo hsc($conf["lang"]); ?>" dir="<?php echo hsc($lang["direction"]); ?>">
@@ -122,62 +124,71 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
         echo " class=\"admin\"";
     } ?>>
 
-    <!-- start header -->
-    <div id="tmpl_header">
-        <div id="tmpl_header_left">
-            <?php
-            //include userdefined logo or show text-headline
-            echo "<div id=\"tmpl_header_logo\">\n                <a href=\"".DOKU_BASE."\" name=\"dokuwiki__top\" id=\"dokuwiki__top\" accesskey=\"h\"";
-            if (file_exists(DOKU_TPLINC."user/logo.png")){
-                //user defined PNG
-                echo "><img src=\"".DOKU_TPL."user/logo.png\" id=\"tmpl_header_logo_img\" alt=\"\"/></a>";
-            }elseif (file_exists(DOKU_TPLINC."user/logo.gif")){
-                //user defined GIF
-                echo "><img src=\"".DOKU_TPL."user/logo.gif\" id=\"tmpl_header_logo_img\" alt=\"\"/></a>";
-            }elseif (file_exists(DOKU_TPLINC."user/logo.jpg")){
-                //user defined JPG
-                echo "><img src=\"".DOKU_TPL."user/logo.jpg\" id=\"tmpl_header_logo_img\" alt=\"\"/></a>";
-            }else{
-                //default
-                echo " class=\"tmpl_header_logo_txt\">".hsc($conf["title"])."</a>";
-            }
-            echo "\n            </div>\n";
-            ?>
-        </div>
+    <!-- load function -->
 
-        <div id="tmpl_header_right">
-            <?php
-            //show header navigation?
-            if (tpl_getConf("prsnl10_headernav")){
-                echo "<div id=\"tmpl_header_nav\">\n                ";
-                //we have to show a custom navigation
-                if (empty($conf["useacl"]) ||
-                    auth_quickaclcheck(cleanID(tpl_getConf("prsnl10_headernav_location")))){ //current user got access?
-                    //get the rendered content of the defined wiki article to use as custom navigation
-                    $interim = tpl_include_page(tpl_getConf("prsnl10_headernav_location"), false);
-                    if ($interim === "" ||
-                        $interim === false){
-                        //show creation/edit link if the defined page got no content
-                        echo "[&#160;";
-                        tpl_pagelink(tpl_getConf("prsnl10_headernav_location"), hsc($lang["prsnl10_fillplaceholder"]." (".tpl_getConf("prsnl10_headernav_location").")"));
-                        echo "&#160;]<br />";
-                    }else{
-                       //show the rendered page content
-                       echo $interim;
-                    }
-                }
-                echo "\n            </div>\n";
-            }
-            ?>
-        </div>
-        <div class="clearer"></div>
+    <?php
+
+    include(DOKU_TPLINC."user/myFunctions.php");
+    matrixer();
+
+    ?>
+
+    <!-- get variable -->
+
+    <?php
+
+      $pageId = $_GET["id"];
+      if ($pageId == "") $pageId = "start";
+      $pagePath = './data/pages/'.$pageId.'.txt';
+      $pageTitle = getPageTitleById("$pageId");
+
+    ?>
+
+    <!-- start header -->
+
+    <div class="matrixHeader" >
+
+      <a id="dokuwiki__top"></a>
+
+      <?php
+
+          if($ACT === "show"){           // check if we are not on an admin page
+
+            $contents = file_get_contents(DOKU_TPLINC."user/network.html");
+            // key page use in R to selectById : Page 1
+            $contents = str_replace('"selected":"4 Noble Truths"', '"selected":"'.$pageTitle.'"', $contents);
+            // by default it focus on the 4 Noble Truths, what a good computer...
+            $contents = str_replace("network_files", DOKU_TPLINC."js/network_files", $contents);
+
+            echo $contents;
+
+          }
+
+      ?>
+
     </div>
+
     <!-- end header -->
 
-
     <!-- start main content area -->
+
     <div class="dokuwiki">
         <?php html_msgarea(); ?>
+
+        <!-- start left nav -->
+
+        <?php
+
+          if($ACT === "show"){           // check if we are not on an admin page
+            echo '<div id="navLeft">';
+            include(DOKU_TPLINC."user/navParent.php");
+            if (isset($navParent[$pagePath])) echo $navParent[$pagePath];
+            echo '</div>';
+          }
+
+        ?>
+
+        <!-- end left nav -->
 
         <!--[if lt IE 7]>
         <noscript>Your browser has JavaScript disabled, the page layout will be broken.
@@ -188,26 +199,43 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
         <!-- start main content -->
         <div id="content"<?php echo (($ACT === "media") ? " class=\"mediamanagerfix\"" : ""); ?>>
             <div class="page">
+
+
             <?php
+
             $toc = tpl_toc(true);
             if ($toc){
                 echo $toc;
              } ?>
 
-<!-- start rendered page content -->
-<?php
-//send already created content to get a faster page rendering on the client
-tpl_flush();
-//show page content
-tpl_content(false);
-?>
-<!-- end rendered page content -->
-<div class="clearer"></div>
+            <!-- start rendered page content -->
+            <?php
+            //send already created content to get a faster page rendering on the client
+            tpl_flush();
+            //show page content
+            tpl_content(false);
+            ?>
+            <!-- end rendered page content -->
+            <div class="clearer"></div>
 
 
             </div>
         </div>
         <!-- end main content -->
+
+        <!-- start right nav -->
+        <?php
+
+          if($ACT === "show"){           // check if we are not on an admin page
+            echo '<div id="navRight">';
+            include(DOKU_TPLINC."user/navChildren.php");
+            if (isset($navChildren[$pagePath])) echo $navChildren[$pagePath];
+            echo '</div>';
+          }
+
+        ?>
+        <!-- end right nav -->
+
         <div class="clearer"></div>
         <?php
         //send already created content to get a faster page rendering on the client
@@ -216,15 +244,41 @@ tpl_content(false);
 
         <div id="tmpl_footer">
             <div id="tmpl_footer_actlinksleft">
+
                 <?php
+
                 echo "[&#160;";
                 tpl_actionlink("top");
                 if (actionOK("index")){ //check if action is disabled
                     echo "&#160;|&#160;";
                     tpl_actionlink("index");
                 }
-                echo "&#160;]";
+                echo "&#160;|";
+
                 ?>
+
+                <?php
+
+                  if(isset($_POST['button1'])) {
+                      matrixer();
+                      echo "<meta http-equiv='refresh' content='0'>";
+
+                  }
+                ?>
+
+                <form method="post">
+                  <input type="hidden" name="button1">
+                  <input type="submit" value="Update network"
+                         style="    border  : none;
+                                    margin  : 0;
+                                    background: none;
+                                    padding: 0;
+                                    "/>
+                </form>
+
+                ]   <!-- <- This is to close the button -->
+
+
             </div>
             <div id="tmpl_footer_actlinksright">
                 <?php
