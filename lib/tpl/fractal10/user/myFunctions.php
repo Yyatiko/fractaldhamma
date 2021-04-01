@@ -70,8 +70,11 @@ function in_array_r($needle, $haystack, $strict = false) { //https://stackoverfl
 
 //function that create navChildren.php navParent.php nodes.csv links.csv network.html
 function matrixer(){
+  $exculdePath = './data/pages/exculde.txt';
 
-  $excludePaths = getPathLinksById("exclude");
+  if (file_exists($exculdePath)){
+    $excludePaths = getPathLinksById("exclude");
+  }
 
   $myChildren  = fopen(DOKU_TPLINC."user/navChildren.php", "w") or die("Unable to open file!");
   $myParent    = fopen(DOKU_TPLINC."user/navParent.php", "w") or die("Unable to open file!");

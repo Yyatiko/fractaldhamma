@@ -129,7 +129,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
     <?php
 
     include(DOKU_TPLINC."user/myFunctions.php");
-    matrixer();
+    //matrixer();
 
     ?>
 
@@ -155,13 +155,12 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
           if($ACT === "show"){           // check if we are not on an admin page
 
             $contents = file_get_contents(DOKU_TPLINC."user/network.html");
-            // key page use in R to selectById : Page 1
+            // key page use in R to selectById : 4 Noble Truths
             $contents = str_replace('"selected":"4 Noble Truths"', '"selected":"'.$pageTitle.'"', $contents);
             // by default it focus on the 4 Noble Truths, what a good computer...
-            $contents = str_replace("network_files", DOKU_TPLINC."js/network_files", $contents);
+            $contents = str_replace("network_files", "./lib/tpl/fractal10/js/network_files", $contents);
 
             echo $contents;
-
           }
 
       ?>
