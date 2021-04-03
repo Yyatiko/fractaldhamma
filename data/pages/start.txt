@@ -1,9 +1,7 @@
 ====== Fractal Dhamma ======
 
-just a test to see if it is working
+Welcome to Fractal Dhamma.
 
-another test 
+Entry point to the network:
 
-[[4nobletruths|]]
-
-[[4rightexertions|]]
+  * [[4_noble_truths|]]

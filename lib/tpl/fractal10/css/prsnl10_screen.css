@@ -69,10 +69,10 @@ h4,
 h5,
 h6 {
     padding: 0.5em 0 0;
-    margin: 0.3em auto 0.1em 0 !important;
+    margin: 0.3em auto 1em 0 !important;
 }
 h1 {
-    font-size: 2.286em; /* 32px, base 14px (see ".dokuwiki") */
+    font-size: 1.7em; /* 32px, base 14px (see ".dokuwiki") */
     line-height: 2.857em; /* 40px, base 14px (see ".dokuwiki") */
 }
 h2 {

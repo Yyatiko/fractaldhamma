@@ -70,16 +70,14 @@ function in_array_r($needle, $haystack, $strict = false) { //https://stackoverfl
 
 //function that create navChildren.php navParent.php nodes.csv links.csv network.html
 function matrixer(){
-  $exculdePath = './data/pages/exculde.txt';
 
-  if (file_exists($exculdePath)){
-    $excludePaths = getPathLinksById("exclude");
-  }
+  $excludePaths = getPathLinksById("exclude"); // need to fix error when no such file exsite.
+  $excludeIds   = getIdLinksById("exclude"); // need to fix error when no such file exsite.
 
   $myChildren  = fopen(DOKU_TPLINC."user/navChildren.php", "w") or die("Unable to open file!");
-  $myParent    = fopen(DOKU_TPLINC."user/navParent.php", "w") or die("Unable to open file!");
-  $mylinks     = fopen(DOKU_TPLINC."user/links.csv", "w") or die("Unable to open file!");
-  $mynodes     = fopen(DOKU_TPLINC."user/nodes.csv", "w") or die("Unable to open file!");
+  $myParent    = fopen(DOKU_TPLINC."user/navParent.php", "w")   or die("Unable to open file!");
+  $mylinks     = fopen(DOKU_TPLINC."user/links.csv", "w")       or die("Unable to open file!");
+  $mynodes     = fopen(DOKU_TPLINC."user/nodes.csv", "w")       or die("Unable to open file!");
 
   $pagesPath = glob("./data/pages/*.txt");
   natsort($pagesPath);
@@ -112,9 +110,15 @@ function matrixer(){
     if(count($subPagesId)==0) fwrite($myChildren,  "'");
     foreach ($subPagesId as $subPageId)
     {
+      if (in_array_r($subpageId[0], $excludeIds))
+      {
+            continue;
+      }
+
       $subPageTitle = getPageTitleById($subPageId[0]);
 
-      fwrite($myChildren, '<a href="doku.php?id='.$subPageId[0].'">'.$subPageTitle.'</a>');// with no nice URLs
+      fwrite($myChildren, '<a href="doku.php?id='.$subPageId[0].'">'.$subPageTitle.'</a>');
+      // with no nice URLs
       //fwrite($myChildren, '<a href="'.$subPageId.'">'.$titleSubPageId.'</a>'); // with nice URLs
       fwrite($myChildren, "\n");
       fwrite($mylinks,    $pageTitle.','.$subPageTitle) ;
@@ -156,7 +160,7 @@ function matrixer(){
 
     foreach ($pagesPath as $subPagePath)
     {
-      if (in_array_r($pagePath, $excludePaths))
+      if (in_array_r($subPagePath, $excludePaths))
       {
             continue;
       }
@@ -167,9 +171,14 @@ function matrixer(){
 
       foreach ($subSubPagesId as $subSubPageId)
       {
+        if (in_array_r($subSubPageId[0], $excludeIds))
+        {
+              continue;
+        }
         if($subSubPageId[0] == $pageId) // if subPage source Page
         {
-            fwrite($myParent, '<a href="doku.php?id='.$subPageId.'">'.$subPageTitle.'</a>'); // With nice URLs
+            fwrite($myParent, '<a href="doku.php?id='.$subPageId.'">'.$subPageTitle.'</a>');
+            // With nice URLs
             //fwrite($myfile2, '<a href="'.$subPageId.'">'.$subPageTitle.'</a>'); // With no nice URLs
             fwrite($myParent, "\n");
             fwrite($myParent,  '<br/><br/>' ) ;
@@ -184,7 +193,8 @@ function matrixer(){
   fclose($myParent);
 
   exec("/usr/local/bin/Rscript /Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/script.R", $output, $retval);
-
+  //echo $retval;
+  //echo "<pre>"; print_r($output); echo "</pre>";
 }
 
  ?>

@@ -15,14 +15,28 @@ nodes[is.na(nodes)] <- 0
 nodes$shadow <- TRUE # Nodes will drop shadow
 links$arrows <- "to" # arrows: 'from', 'to', or 'middle'
 
-network <- visNetwork(nodes, links, height = "300px", width = "100%",physics=T) %>%
+network <- visNetwork(nodes, links, height = "400px", width = "100%",physics=T) %>%
     visPhysics(solver = "forceAtlas2Based", forceAtlas2Based = list(gravitationalConstant = -30))%>%
+    #visNodes(size = 30, color = list(highlight = list(background = "#7ea7de", border = "#2B7CE9")))%>%
     visNodes(size = 30)%>%
     visOptions(highlightNearest = TRUE,
                nodesIdSelection = list(selected = "4 Noble Truths"))%>%
-    visLayout(randomSeed = 123) %>%
+    visLayout(randomSeed = 123)%>%
     visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
 
-visSave(network, file = "/Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/network.html", selfcontained = F)
+    visSave(network, file = "/Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/network.html", selfcontained = F)
+
+    network <- visNetwork(nodes, links, height = "700px", width = "100%",physics=T) %>%
+        visPhysics(solver = "forceAtlas2Based", forceAtlas2Based = list(gravitationalConstant = -30))%>%
+        #visNodes(size = 30, color = list(highlight = list(background = "#7ea7de", border = "#2B7CE9")))%>%
+        visNodes(size = 30)%>%
+        visOptions(highlightNearest = TRUE,
+                   nodesIdSelection = list(selected = "4 Noble Truths"))%>%
+        visLayout(randomSeed = 123)%>%
+        visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
+
+    visSave(network, file = "/Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/network2.html", selfcontained = F)
+
+
 
 # 4 Noble Truths is used as an anchor and is changed via php in the website.
