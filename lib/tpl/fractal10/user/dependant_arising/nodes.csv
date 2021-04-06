@@ -1,0 +1,4 @@
+id,label,pageId
+Birth,Birth,dependant_arising:birth
+Fabrication,Fabrication,dependant_arising:fabrication
+Ignorance,Ignorance,dependant_arising:ignorance

@@ -140,7 +140,18 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
       $pageId = $_GET["id"];
       if ($pageId == "") $pageId = "start";
       $pagePath = './data/pages/'.$pageId.'.txt';
+      $pagePath = str_replace(':', '/', $pagePath); // if contains namespaces adjust path
       $pageTitle = getPageTitleById("$pageId");
+      $firstNameSpace = getFirstNameSpaceById($pageId);
+
+      include(DOKU_TPLINC."user/".$firstNameSpace."/navChildren.php");
+        // contain the children matrix. the first Id is used as the anchor.
+      $keys=array_Keys($navChildren);
+      $firstPath=$keys[0];
+      $firstTitle=getPageTitleByPath($firstPath);
+
+      //matrixerByNameSpace($firstNameSpace); // for debugging. usually the function is called only if button is clicked
+
 
     ?>
 
@@ -154,25 +165,29 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
 
           if($ACT === "show"){           // check if we are not on an admin page
 
-            if($pageId != "network"){
+            //if($pageId != "network"){
 
-              $contents = file_get_contents(DOKU_TPLINC."user/network.html");
+              if (strlen($firstNameSpace)>0) $firstNameSpaceSlash = $firstNameSpace."/";
+              if (is_file(DOKU_TPLINC."user/".$firstNameSpaceSlash."network.html")){
+              $contents = file_get_contents(DOKU_TPLINC."user/".$firstNameSpaceSlash."network.html");
               // key page use in R to selectById : 4 Noble Truths
-              $contents = str_replace('"selected":"4 Noble Truths"', '"selected":"'.$pageTitle.'"', $contents);
-              // by default it focus on the 4 Noble Truths, what a good computer...
+              $contents = str_replace('"selected":"'.$firstTitle.'"','"selected":"'.$pageTitle.'"', $contents);
               $contents = str_replace("network_files", "./lib/tpl/fractal10/js/network_files", $contents);
 
               echo $contents;
-            }else{
-
-              $contents = file_get_contents(DOKU_TPLINC."user/network2.html");
-              // key page use in R to selectById : 4 Noble Truths
-              $contents = str_replace('"selected":"4 Noble Truths"', '"selected":"'.$pageTitle.'"', $contents);
-              // by default it focus on the 4 Noble Truths, what a good computer...
-              $contents = str_replace("network2_files", "./lib/tpl/fractal10/js/network_files", $contents);
-
-              echo $contents;
             }
+            //}
+
+            //else{
+
+            //  $contents = file_get_contents(DOKU_TPLINC."user/network2.html");
+              // key page use in R to selectById : 4 Noble Truths
+            //  $contents = str_replace('"selected":"4 Noble Truths"', '"selected":"'.$pageTitle.'"', $contents);
+              // by default it focus on the 4 Noble Truths, what a good computer...
+            //  $contents = str_replace("network2_files", "./lib/tpl/fractal10/js/network_files", $contents);
+
+            //  echo $contents;
+            //}
           }
 
       ?>
@@ -192,7 +207,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
 
           if($ACT === "show"){           // check if we are not on an admin page
             echo '<div id="navLeft">';
-            include(DOKU_TPLINC."user/navParent.php");
+            include(DOKU_TPLINC."user/".$firstNameSpaceSlash."navParent.php");
             if (isset($navParent[$pagePath])) echo $navParent[$pagePath];
             echo '</div>';
           }
@@ -239,7 +254,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
 
           if($ACT === "show"){           // check if we are not on an admin page
             echo '<div id="navRight">';
-            include(DOKU_TPLINC."user/navChildren.php");
+            include(DOKU_TPLINC."user/".$firstNameSpaceSlash."navChildren.php");
             if (isset($navChildren[$pagePath])) echo $navChildren[$pagePath];
             echo '</div>';
           }
@@ -271,7 +286,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
                 <?php
 
                   if(isset($_POST['button1'])) {
-                      matrixer();
+                      matrixerByNameSpace($firstNameSpace);
                       echo "<meta http-equiv='refresh' content='0'>";
 
                   }

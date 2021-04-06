@@ -96,3 +96,55 @@
 1617441949	::1	E	virtue	cittadhammo			61
 1617442053	::1	E	8_fold_path	cittadhammo			-494
 1617442123	::1	E	exclude	cittadhammo			0
+1617467490	::1	E	4_noble_truths	cittadhammo			612
+1617467514	::1	E	4_noble_truths	cittadhammo			0
+1617467556	::1	E	4_noble_truths	cittadhammo			2848
+1617467578	::1	E	4_noble_truths	cittadhammo			8
+1617467782	::1	E	4_noble_truths	cittadhammo			40
+1617467814	::1	C	1st_noble_truth	cittadhammo	created		37
+1617467854	::1	E	1st_noble_truth	cittadhammo			0
+1617467862	::1	E	1st_noble_truth	cittadhammo			0
+1617467897	::1	E	8_fold_path	cittadhammo			0
+1617467959	::1	E	8_fold_path	cittadhammo			3
+1617468591	::1	C	cessation	cittadhammo	created		6570
+1617468701	::1	E	4_noble_truths	cittadhammo			14
+1617468767	::1	C	2nd_noble_truth	cittadhammo	created		1283
+1617468795	::1	E	2nd_noble_truth	cittadhammo			-8
+1617468818	::1	E	2nd_noble_truth	cittadhammo			16
+1617468831	::1	E	2nd_noble_truth	cittadhammo			-4
+1617468893	::1	E	2nd_noble_truth	cittadhammo			-14
+1617519138	::1	E	6_gradual_trainings	cittadhammo			3
+1617519265	::1	E	6_gradual_trainings	cittadhammo			40
+1617519512	::1	C	generosity	cittadhammo	created		16602
+1617519559	::1	E	generosity	cittadhammo			3
+1617519764	::1	E	generosity	cittadhammo			11
+1617519853	::1	C	heaven	cittadhammo	created		8907
+1617520029	::1	E	heaven	cittadhammo			37
+1617520203	::1	C	drawbacks	cittadhammo	created		14287
+1617520225	::1	E	drawbacks	cittadhammo			11
+1617520271	::1	E	drawbacks	cittadhammo			-3
+1617520293	::1	E	drawbacks	cittadhammo			0
+1617520309	::1	E	drawbacks	cittadhammo			14
+1617520410	::1	E	6_gradual_trainings	cittadhammo			17
+1617520516	::1	C	renunciation	cittadhammo	created		7836
+1617520531	::1	E	renunciation	cittadhammo			12
+1617653221	::1	C	mynamesapce:mypage	cittadhammo	created		25
+1617653255	::1	C	mynamesapce	cittadhammo	created		28
+1617653277	::1	D	mynamesapce	cittadhammo	removed		-28
+1617691520	::1	C	mynamesapce:mypage2	cittadhammo	created		72
+1617691535	::1	C	mynamesapce:page3	cittadhammo	created		48
+1617692470	::1	C	mynamesapce:exclude	cittadhammo	created		23
+1617692477	::1	E	mynamesapce:exclude	cittadhammo			24
+1617693726	::1	C	mynamesapce:4nobletruths	cittadhammo	created		34
+1617700920	::1	C	philadelphie:routa	cittadhammo	created		20
+1617708920	::1	E	philadelphie:routa	cittadhammo			24
+1617708968	::1	C	philadelphie:yoga	cittadhammo	created		43
+1617712129	::1	C	philadelphie:exclude	cittadhammo	created		22
+1617712142	::1	E	philadelphie:exclude	cittadhammo			26
+1617715084	::1	C	dependant_arising:ignorance	cittadhammo	created		24
+1617715124	::1	C	dependant_arising:fabrication	cittadhammo	created		26
+1617715302	::1	C	dependant_arising:birth	cittadhammo	created		20
+1617715537	::1	E	dependant_arising:birth	cittadhammo			1220
+1617715756	::1	E	dependant_arising:birth	cittadhammo			1247
+1617723590	::1	E	dependant_arising:ignorance	cittadhammo			93
+1617727961	::1	E	dependant_arising:ignorance	cittadhammo			6

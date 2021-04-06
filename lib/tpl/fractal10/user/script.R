@@ -12,6 +12,9 @@ nodes$value <- degree_value[match(nodes$id, names(degree_value))]
 
 nodes[is.na(nodes)] <- 0
 
+nodes
+links
+
 nodes$shadow <- TRUE # Nodes will drop shadow
 links$arrows <- "to" # arrows: 'from', 'to', or 'middle'
 
@@ -20,7 +23,7 @@ network <- visNetwork(nodes, links, height = "400px", width = "100%",physics=T) 
     #visNodes(size = 30, color = list(highlight = list(background = "#7ea7de", border = "#2B7CE9")))%>%
     visNodes(size = 30)%>%
     visOptions(highlightNearest = TRUE,
-               nodesIdSelection = list(selected = "4 Noble Truths"))%>%
+               nodesIdSelection = list(selected = "anchorNode"))%>%
     visLayout(randomSeed = 123)%>%
     visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
 
@@ -31,12 +34,8 @@ network <- visNetwork(nodes, links, height = "400px", width = "100%",physics=T) 
         #visNodes(size = 30, color = list(highlight = list(background = "#7ea7de", border = "#2B7CE9")))%>%
         visNodes(size = 30)%>%
         visOptions(highlightNearest = TRUE,
-                   nodesIdSelection = list(selected = "4 Noble Truths"))%>%
-        visLayout(randomSeed = 123)%>%
+                   nodesIdSelection = list(selected = "anchorNode"))%>%
+        visLayout(randomSeed = 12345)%>%
         visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
 
     visSave(network, file = "/Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/network2.html", selfcontained = F)
-
-
-
-# 4 Noble Truths is used as an anchor and is changed via php in the website.

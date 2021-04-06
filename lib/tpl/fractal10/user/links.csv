@@ -1,30 +1,40 @@
 from,to
-4 Noble Truths,8-fold Noble Path
+4 Noble Truths,Noble Truth of Dukkha
+4 Noble Truths,Noble Truth of Origin
+4 Noble Truths,Noble Truth of Cessation
+4 Noble Truths,Noble Eightfold Path
+6 Gradual Trainings,Generosity
 6 Gradual Trainings,Virtue
+6 Gradual Trainings,Heaven
+6 Gradual Trainings,Drawbacks
+6 Gradual Trainings,Renunciation
 6 Gradual Trainings,4 Noble Truths
-8-fold Noble Path,Right View
-8-fold Noble Path,Right Resolve
-8-fold Noble Path,Right Speech
-8-fold Noble Path,Right Action
-8-fold Noble Path,Right Livelihood
-8-fold Noble Path,Right Effort
-8-fold Noble Path,Right Mindfulness
-8-fold Noble Path,Right Concentration
-37 Wings to Awakening,4 Establishings of Mindfulness
-37 Wings to Awakening,4 Right Exertions
-37 Wings to Awakening,4 Bases of Power
-37 Wings to Awakening,5 Faculties
-37 Wings to Awakening,5 Strengths
-37 Wings to Awakening,7 Factors of Awakening
-37 Wings to Awakening,8-fold Noble Path
+Noble Eightfold Path,Right View
+Noble Eightfold Path,Right Resolve
+Noble Eightfold Path,Right Speech
+Noble Eightfold Path,Right Action
+Noble Eightfold Path,Right Livelihood
+Noble Eightfold Path,Right Effort
+Noble Eightfold Path,Right Mindfulness
+Noble Eightfold Path,Right Concentration
 Concentration,Right Effort
 Concentration,Right Mindfulness
 Concentration,Right Concentration
 Discernement,Right View
 Discernement,Right Resolve
-Right Effort,4 Right Exertions
-Right Mindfulness,4 Establishings of Mindfulness
+Exclude,Exclude
+Exclude,Fractal Dhamma
+Exclude,Network
+Generosity,
+Generosity,Heaven
+Generosity,
+Heaven,
+Heaven,Right View
+Heaven,
+Right Effort,
+Right Mindfulness,
 Right View,4 Noble Truths
+Fractal Dhamma,4 Noble Truths
 Virtue,Right Speech
 Virtue,Right Action
 Virtue,Right Livelihood
