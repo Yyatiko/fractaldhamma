@@ -1,5 +1,37 @@
 ====== Ignorance ======
 
-From ignorance as a requisite condition come [[dependant_arising:fabrication|fabrications]].
+From ignorance as a [[dependant_arising:ignorance#test|requisite]] condition come [[dependant_arising:fabrication|fabrications]].
 
-test
+test <BOOKMARK:mybookmark> 
+
+test [[dependant_arising:ignorance#consciousness|anchor_text]]
+
+
+From ignorance as a requisite condition come fabricationsc.\\
+From fabrications as a requisite condition comes {{anchor:consciousness:consciousness}}.\\
+From consciousness as a requisite condition comes name-&-form.\\
+From name-and-form as a requisite condition come the six sense media.\\
+From the six sense media as a requisite condition comes contact.\\
+From contact as a requisite condition comes feeling.\\
+From feeling as a requisite condition comes craving.\\
+From craving as a requisite condition comes.\\
+From clinging/sustenance as a requisite condition comes becoming.\\
+From becoming as a requisite condition comes birth.\\
+From birth as a requisite condition, then aging-&-death, sorrow, lamentation,
+pain, distress, and despair come into play. Such is the origination of this entire
+mass of stress & suffering.
+
+[[dependant_arising:ignorance#mybookmark|anchor_text]]
+
+
+
+This is a == test == that is very interesting
+
+== test == that is very interesting
+
+This is a == test ==
+
+== test ==
+
+
+

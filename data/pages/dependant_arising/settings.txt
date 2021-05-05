@@ -1,0 +1,13 @@
+====== Settings ======
+
+==== Network Color ====
+
+red, green, blue (default) 
+
+==== Page to exclude ====
+
+All internal links from this page are exclude from the network in the current namespace
+
+[[dependant_arising:settings|]]
+
+

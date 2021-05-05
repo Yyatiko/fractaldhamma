@@ -1,0 +1,10 @@
+====== Test ======
+
+<nspages -tree -r -exclude -subns -pagesInNs -h1 -textNs="All my content as a tree!">
+
+
+{{indexmenu>..#1|js navbar nocookie}}
+
+{{indexmenu>:}}
+
+{{indexmenu>.#1}}

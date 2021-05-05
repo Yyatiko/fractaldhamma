@@ -23,7 +23,7 @@ network <- visNetwork(nodes, links, height = "400px", width = "100%",physics=T) 
     #visNodes(size = 30, color = list(highlight = list(background = "#7ea7de", border = "#2B7CE9")))%>%
     visNodes(size = 30)%>%
     visOptions(highlightNearest = TRUE,
-               nodesIdSelection = list(selected = "yoga"))%>%
+               nodesIdSelection = list(selected = "test"))%>%
     visLayout(randomSeed = 123)%>%
     visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
 
@@ -34,7 +34,7 @@ network <- visNetwork(nodes, links, height = "400px", width = "100%",physics=T) 
         #visNodes(size = 30, color = list(highlight = list(background = "#7ea7de", border = "#2B7CE9")))%>%
         visNodes(size = 30)%>%
         visOptions(highlightNearest = TRUE,
-                   nodesIdSelection = list(selected = "yoga"))%>%
+                   nodesIdSelection = list(selected = "test"))%>%
         visLayout(randomSeed = 12345)%>%
         visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
 

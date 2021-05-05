@@ -48,9 +48,7 @@ body {
 h1, h1 a,
 h2, h2 a,
 h3, h3 a,
-h4, h4 a,
-h5, h5 a,
-h6, h6 a {
+h4, h4 a{
     font-family: 'EB Garamond','Droid Sans','Liberation Sans',Arial,Helvetica,sans-serif;
     /* same font stack should be used for ".dokuwiki div.tocheader" */
     font-weight: normal;
@@ -65,9 +63,7 @@ h6, h6 a {
 h1,
 h2,
 h3,
-h4,
-h5,
-h6 {
+h4{
     padding: 0.5em 0 0;
     margin: 0.3em auto 1em 0 !important;
 }
@@ -84,9 +80,14 @@ h3 {
 h4 {
     font-size: 1.143em; /* 16px, base 14px (see ".dokuwiki") */
 }
-h5,
-h6 {
+h5 {
     font-size: 1em; /* 14px, base 14px (see ".dokuwiki") */
+    display : inline;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: normal;
 }
 .dokuwiki div.page h1:first-child, /* remove top margin from headlines when there is no text above */
 .dokuwiki div.page h2:first-child,

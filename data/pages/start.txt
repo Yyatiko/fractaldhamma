@@ -5,3 +5,5 @@ Welcome to Fractal Dhamma.
 Entry point to the network:
 
   * [[4_noble_truths|]]
+
+{{indexmenu>..#1|js#doku2 notoc}}
