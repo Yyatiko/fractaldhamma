@@ -1,3 +1,0 @@
-====== My page 3 ======
-
-[[mynamesapce:mypage|]]

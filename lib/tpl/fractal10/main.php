@@ -130,7 +130,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
 
     include(DOKU_TPLINC."user/myFunctions.php");
     //matrixer(); // for debugging. usually the function is called only if button is clicked
-
+    // matrixer is depreciated !
     ?>
 
     <!-- get variable -->
@@ -144,16 +144,31 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
       $pageTitle = getPageTitleById("$pageId");
       $firstNameSpace = getFirstNameSpaceById($pageId);
 
-      include(DOKU_TPLINC."user/".$firstNameSpace."/navChildren.php");
+      if (!empty($firstNameSpace)) { // test if we are not on the root, ie, not in a namesapce
+
+        include(DOKU_TPLINC."user/".$firstNameSpace."/navChildren.php");
         // contain the children matrix. the first Id is used as the anchor.
-      $keys=array_Keys($navChildren);
-      $firstPath=$keys[0];
-      $firstTitle=getPageTitleByPath($firstPath);
+        $keys=array_Keys($navChildren);
+        $firstPath=$keys[0];
+        $firstTitle=getPageTitleByPath($firstPath);
+      }
 
-      //matrixerByNameSpace($firstNameSpace); // for debugging. usually the function is called only if button is clicked
 
+
+      //  matrixerByNameSpace($firstNameSpace); // for debugging. usually the function is called only if button is clicked
 
     ?>
+
+
+
+
+    <!-- add top bar -->
+
+      <div class="navbar"> <!-- if used with topbar class, need ul li in topbar page -->
+          <?php tpl_include_page('topbar') /* includes the wiki page "topbar" */ ?>
+      </div>
+
+
 
     <!-- start header -->
 
@@ -171,12 +186,15 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
               if (is_file(DOKU_TPLINC."user/".$firstNameSpaceSlash."network.html")){
               $contents = file_get_contents(DOKU_TPLINC."user/".$firstNameSpaceSlash."network.html");
               // key page use in R to selectById : 4 Noble Truths
-              $contents = str_replace('"selected":"'.$firstTitle.'"','"selected":"'.$pageTitle.'"', $contents);
+              //$contents = str_replace('"selected":"'.$firstTitle.'"','"selected":"'.$pageTitle.'"', $contents);
+
               $contents = str_replace("network_files", "./lib/tpl/fractal10/js/network_files", $contents);
+              $contents = utf8hex($contents);
+              $contents = str_replace('"selected":"'.$firstTitle.'"','"selected":"'.$pageTitle.'"', $contents);
 
               echo $contents;
             }
-            //}
+            //} // look useless
 
             //else{
 
@@ -199,16 +217,22 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
     <!-- start main content area -->
 
     <div class="dokuwiki">
+
         <?php html_msgarea(); ?>
 
         <!-- start left nav -->
 
         <?php
+          // uncomment the lines under to make it appear  (change css accordingly see notes)
 
           if($ACT === "show"){           // check if we are not on an admin page
             echo '<div id="navLeft">';
-            include(DOKU_TPLINC."user/".$firstNameSpaceSlash."navParent.php");
-            if (isset($navParent[$pagePath])) echo $navParent[$pagePath];
+            if (!empty($firstNameSpace)) { // test if we are not on the root, ie, not in a namesapce
+
+              include(DOKU_TPLINC."user/".$firstNameSpaceSlash."navParent.php");
+              if (isset($navParent[$pagePath])) echo $navParent[$pagePath];
+
+            }
             echo '</div>';
           }
 
@@ -252,10 +276,17 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
         <!-- start right nav -->
         <?php
 
+          // uncomment the line under to make it appear
+
           if($ACT === "show"){           // check if we are not on an admin page
             echo '<div id="navRight">';
-            include(DOKU_TPLINC."user/".$firstNameSpaceSlash."navChildren.php");
-            if (isset($navChildren[$pagePath])) echo $navChildren[$pagePath];
+            if (!empty($firstNameSpace)) { // test if we are not on the root, ie, not in a namesapce
+
+              include(DOKU_TPLINC."user/".$firstNameSpaceSlash."navChildren.php");
+              if (isset($navChildren[$pagePath])) echo $navChildren[$pagePath];
+
+            }
+
             echo '</div>';
           }
 

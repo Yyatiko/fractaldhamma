@@ -87,7 +87,16 @@ function in_array_r($needle, $haystack, $strict = false) { //https://stackoverfl
     return false;
 }
 
-//function that create navChildren.php navParent.php nodes.csv links.csv network.html
+function utf8hex ($string) {
+  $string = str_replace('<c4><81>','ā',$string);    //Ą<e1><b9><ad>
+  $string = str_replace('<e1><b9><ad>','ṭ',$string);    //Ą<e1><b9><ad>
+  $string = str_replace('<e1><b9><85>','ṅ',$string);    //Ą<e1><b9><ad>
+  //$string = str_replace('"',"'",$string);    //Ą<e1><b9><ad>
+  //$string = str_replace('@','"',$string);    //Ą<e1><b9><ad>
+   return ($string);
+   }
+
+//function that create navChildren.php navParent.php nodes.csv links.csv network.html in the root directory only (not up to date)
 function matrixer(){
 
   $excludePaths = getPathLinksById("exclude"); // need to fix error when no such file exsite.
@@ -123,6 +132,7 @@ function matrixer(){
     $subPagesId = getIdLinksById($pageId);
 
     fwrite($myChildren,  "'".$pagePath."'=>'\n" ) ;
+    // faulty fwrite($mynodes,  $pageTitle.',<a href="doku.php?id='.$pageId.'">'.$pageTitle.'</a>,'.$pageId) ;
     fwrite($mynodes,  $pageTitle.','.$pageTitle.','.$pageId) ;
     fwrite($mynodes,  "\n" ) ;
 
@@ -216,13 +226,13 @@ function matrixer(){
   //echo "<pre>"; print_r($output); echo "</pre>";
 }
 
-//personalised function that create navChildren.php navParent.php nodes.csv links.csv network.html in evry subspace
+//personalised function that create navChildren.php navParent.php nodes.csv links.csv network.html in every subspace
 function matrixerByNameSpace($nameSpace){
 
   if (strlen($nameSpace)>0) $nameSpaceSlash = $nameSpace."/";
 
   if (!is_dir(DOKU_TPLINC."user/".$nameSpace)){
-    mkdir(DOKU_TPLINC."user/".$nameSpace, 777, true);// this doesnt work... need to give permission manualy
+    mkdir(DOKU_TPLINC."user/".$nameSpace, 777, true);// this doesnt work... need to give permission manualy every time
   }
 
   if (is_file("./data/pages/".$nameSpaceSlash."exclude.txt")){
@@ -238,7 +248,10 @@ function matrixerByNameSpace($nameSpace){
   $myParent    = fopen(DOKU_TPLINC."user/".$nameSpace."/navParent.php", "w")   or die("Unable to open file!");
   $mylinks     = fopen(DOKU_TPLINC."user/".$nameSpace."/links.csv", "w")       or die("Unable to open file!");
   $mynodes     = fopen(DOKU_TPLINC."user/".$nameSpace."/nodes.csv", "w")       or die("Unable to open file!");
-  $myRScript   = fopen(DOKU_TPLINC."user/".$nameSpace."/script.R", "w")       or die("Unable to open file!");
+  $myRScript   = fopen(DOKU_TPLINC."user/".$nameSpace."/script.R", "w")        or die("Unable to open file!");
+
+  $ChildCheck = array(); // to check for doublon on remove them
+  $ParentCheck = array();
 
   $pagesPath = glob("./data/pages/".$nameSpace."/*.txt");
   natsort($pagesPath);
@@ -247,7 +260,7 @@ function matrixerByNameSpace($nameSpace){
 
   fwrite($myChildren,  '<?php $navChildren=array(' ) ;
   fwrite($myChildren,  "\n" ) ;
-  fwrite($mynodes,     'id,label,pageId' ) ;
+  fwrite($mynodes,     'id,title,pageId' ) ; //title replaces label (label is used in older script)
   fwrite($mynodes,     "\n" ) ;
   fwrite($mylinks,     'from,to' ) ;
   fwrite($mylinks,     "\n" ) ;
@@ -263,8 +276,14 @@ function matrixerByNameSpace($nameSpace){
     $pageId     = getPageIdByPath($pagePath);
     $subPagesId = getIdLinksById($pageId);
 
+    $ChildrenCheck = array() ; // reinitiallize the array
+
+
     fwrite($myChildren,  "'".$pagePath."'=>'\n" ) ;
-    fwrite($mynodes,  $pageTitle.','.$pageTitle.','.$pageId) ;
+    //fwrite($mynodes,  $pageTitle.','.$pageTitle.','.$pageId) ;
+    fwrite($mynodes,  $pageTitle.','.$pageTitle.',doku.php?id='.$pageId) ;
+    //fwrite($mynodes,  $pageTitle.','.$pageTitle.',<a href="doku.php?id="'.$pageId.'"') ;
+    //fwrite($mynodes, $pageTitle.',<a href="doku.php?id='.$pageId.'">'.$pageTitle.'</a>,'.$pageId) ;
     fwrite($mynodes,  "\n" ) ;
 
     if(count($subPagesId)==0) fwrite($myChildren,  "'");
@@ -275,16 +294,23 @@ function matrixerByNameSpace($nameSpace){
             continue;
       }
 
+
       $subPageTitle = getPageTitleById($subPageId[0]);
 
-      fwrite($myChildren, '<a href="doku.php?id='.$subPageId[0].'">'.$subPageTitle.'</a>');
-      // with no nice URLs
-      //fwrite($myChildren, '<a href="'.$subPageId.'">'.$titleSubPageId.'</a>'); // with nice URLs
-      fwrite($myChildren, "\n");
-      fwrite($mylinks,    $pageTitle.','.$subPageTitle) ;
+      if (!in_array_r($subPageId[0], $ChildrenCheck)) // jump over if it is a doublon.
+      {
+        fwrite($myChildren, '<a href="doku.php?id='.$subPageId[0].'">'.$subPageTitle.'</a>');
+        fwrite($myChildren, "\n");
+        // with no nice URLs
+        //fwrite($myChildren, '<a href="'.$subPageId.'">'.$titleSubPageId.'</a>'); // with nice URLs
+      }
+
+      array_push($ChildrenCheck, $subPageId[0]); // add $subPageId to the check
+
+      fwrite($mylinks,    $pageTitle.','.$subPageTitle) ; // doublon in links.csv are removed with Rscript but could be added in the if above if needed
       fwrite($mylinks,    "\n" ) ;
 
-      if( !next( $subPagesId ) ) {
+      if( !next( $subPagesId ) ) {  // I think this could be simplify as it is done in the parent loop
           fwrite($myChildren,  "'" );
       }
       else fwrite($myChildren,  '<br/><br/>' ) ;
@@ -315,6 +341,7 @@ function matrixerByNameSpace($nameSpace){
 
     $pageTitle  = getPageTitleByPath($pagePath);
     $pageId     = getPageIdByPath($pagePath);
+    $ParentCheck = array() ; // reinitiallize the array
 
     fwrite($myParent,  "'".$pagePath."'=>'\n" ) ;
 
@@ -335,8 +362,13 @@ function matrixerByNameSpace($nameSpace){
         {
               continue;
         }
+        if (in_array_r($subPageId, $ParentCheck)) // jump over if it is a doublon.
+        {
+              continue;
+        }
         if($subSubPageId[0] == $pageId) // if subPage source Page
         {
+            array_push($ParentCheck, $subPageId); // add $subPageId to the check
             fwrite($myParent, '<a href="doku.php?id='.$subPageId.'">'.$subPageTitle.'</a>');
             // With nice URLs
             //fwrite($myfile2, '<a href="'.$subPageId.'">'.$subPageTitle.'</a>'); // With no nice URLs
@@ -367,8 +399,12 @@ function matrixerByNameSpace($nameSpace){
 
   //echo "/usr/local/bin/Rscript /Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/".$nameSpaceSlash."script.R";
   exec("/usr/local/bin/Rscript /Users/Lancelot/Sites/GitHub/fractaldhamma/lib/tpl/fractal10/user/".$nameSpaceSlash."script.R", $output, $retval);
-  //echo '</br>return value : '.$retval;
-  //echo "<pre>"; print_r($output); echo "</pre>";
+  //echo '</br>return value : '.$retval; // for debugging
+  //echo "<pre>"; print_r($output); echo "</pre>"; // for debugging
+
 }
+
+
+
 
  ?>

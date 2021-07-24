@@ -1,9 +1,33 @@
-====== Fractal Dhamma ======
+\\
+\\
+\\
+====== Home ======
 
-Welcome to Fractal Dhamma.
+Welcome to **Fractal10** DokuWiki Template. 
 
-Entry point to the network:
+Tired of making non linear mindmap by yourself ? This DokuWiki template create automatically interactive networks using Rscript and Visnetwork library for every namespace in your wiki. 
 
-  * [[4_noble_truths|]]
+  * Nodes in the network correspond to pages in the namespaces. 
+  * Edges of the network correspond to internal links between pages. 
+  * There is also two side columns on every page displaying parent pages on the left and child pages on the right. 
 
-{{indexmenu>..#1|js#doku2 notoc}}
+The network builds up as you create you wiki pages and connect them with internal links. It uses community algorithm to allocates different collors to nodes and the sizes of nodes are according to their degree, i.e. the number of edges they connect to. 
+
+===== Notes =====
+
+  *   Use the Update **Network button** in footer to create a new network and update links.
+  *   The **Top Bar** represent the different namespaces.
+  *   The **Sitemap** button in footer allows to access all pages, even hiden one.
+  *   Click on a node to access node page.
+  *   Click anywhere inside the network to deselct the current node
+  *   A namespace can have a exclude page that contains some settings.
+  *   To modify site map, edit : [[sitemap|]]
+  *   To modify top bar, edit : [[topbar|]]
+
+===== What Needs Doing =====
+
+  - Creat network for root level
+  - Merge setting page with exclude page
+  - Have different algirtm available in setting
+  - Have settings for zoom and drag
+  - Edit footer

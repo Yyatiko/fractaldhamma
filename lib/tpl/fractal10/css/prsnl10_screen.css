@@ -44,6 +44,8 @@ body {
     /*background: #e4e4e4 url(images/background.png) repeat-x 0 0;*/
     font: normal 130%/1.1em 'EB Garamond',Verdana,'Liberation Sans',Arial,Helvetica,sans-serif;
     /* same font stack should be used for ".dokuwiki div.toc" */
+    z-index:1;
+
 }
 h1, h1 a,
 h2, h2 a,
@@ -139,7 +141,7 @@ dd {
 }
 svg
 {
-    width: 24;
+    width: 24px;
 }
 dt {
     font-weight: bold;
@@ -542,13 +544,21 @@ div#pagewrap {
     margin-right: 5px;
     width: 570px;
     vertical-align: top;
+
+     /* uncomment below to remove navParent and navChildren from UI (need to comment in main.php also)*/
+
+    /*display: block;
+    margin-left: auto;
+    margin-right: auto;*/
 }
+
 .dokuwiki div#navLeft {
     display: inline-block;
     padding: 0;
     text-align: right;
     vertical-align: top;
     margin-top: 17px;
+    margin-top: 92px;
     margin-left: 20px;
     margin-right: 20px;
     width: 110px;
@@ -560,6 +570,7 @@ div#pagewrap {
     text-align: left;
     vertical-align: top;
     margin-top: 17px;
+    margin-top: 92px;
     margin-left: 20px;
     margin-right: 20px;
     width: 110px;
@@ -1226,4 +1237,130 @@ html.popup #media__opts br {
 .dokuwiki .gallery table,
 .dokuwiki .gallery td {
     border: 0 none;
+}
+
+/* top bar */
+body{ /* avoid collision with sitemap/home page*/
+  padding-top: 20px;
+}
+    /* top bar */
+    .topbar {
+        position: absolute; /* "fixed" for sticky on top */
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .topbar ul {
+        text-align: center;
+        /*max-width: 600px; */ /* change accordingly */
+        margin: 0 auto;
+        padding: 5px 0;
+        list-style: none;
+        background-color: __background_alt__;
+        /*border: solid __border__;
+        border-width: 0 1px 1px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        box-shadow: 0 1px 3px #999;
+        overflow: hidden;*/
+    }
+    .topbar ul li {
+        margin: 0;
+        padding: 0 10px;
+        display: inline-block;
+        font-size: 85%;
+    }
+    .topbar ul li a {
+        display: inline-block;
+        min-height: 20px; /* make sure icons are not cut off (most icons are 16x16) */
+    }
+
+    /* for IE7 */
+    *+html .topbar ul li,
+    *+html .topbar ul li a {
+        display: inline;
+    }
+
+    /* changes specific for the default "dokuwiki" template,
+       other templates need other changes! */
+    #dokuwiki__header {
+        padding-top: 3.5em;
+    }
+    #dokuwiki__usertools {
+        top: 2em;
+    }
+
+    /* IE8 needs this in the default template */
+    .topbar ul li img {
+        max-width: none;
+    }
+
+
+/* for screens less than 480px wide */
+@media only screen and (max-width: 480px) {
+
+    /* move topbar back to the bottom */
+    .dokuwiki .topbar {
+        position: static;
+    }
+
+    /* un-do some specific template changes */
+    #dokuwiki__header {
+        padding-top: .5em;
+    }
+
+} /* /@media */
+
+
+@media print {
+
+    /* don't print the topbar */
+    .dokuwiki .topbar {
+        display: none;
+    }
+
+} /* /@media */
+
+/* The navigation bar */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+  background-color: __background_alt__;
+  box-shadow: 0 1px 3px #999;
+
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  left: 0;
+  width: 100%; /* Full width */
+  text-align: center;
+  z-index:2;
+}
+
+/* navbar */
+
+/* Links inside the navbar */
+.navbar a {
+  display: inline-block;
+  /*color: #f2f2f2;*/
+  padding: 5px 16px;
+  /*text-decoration: none;*/
+  margin: 0 auto;
+  font-size: 85%;
+
+}
+
+.navbar p {
+  margin: 0 0 0 0;
+
+}
+
+/* Change background on mouse-over */
+.navbar a:hover {
+  /*background: #ddd;
+  color: black;*/
+}
+
+/* Main content */
+.main {
+  margin-top: 30px; /* Add a top margin to avoid content overlay */
 }

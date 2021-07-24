@@ -1,20 +1,67 @@
-1617812002	::1	E	start	cittadhammo			-2
-1617812515	::1	E	start	cittadhammo			-34
-1617815195	::1	C	sitemap	cittadhammo	created		22
-1617815241	::1	E	sitemap	cittadhammo			12
-1617815356	::1	C	dependant_arising:settings	cittadhammo	created		81
-1617815458	::1	E	dependant_arising:settings	cittadhammo			147
-1617897678	::1	E	dependant_arising:settings	cittadhammo			0
-1617950736	::1	E	dependant_arising:ignorance	cittadhammo			820
-1617950786	::1	E	dependant_arising:ignorance	cittadhammo			0
-1617950845	::1	E	dependant_arising:ignorance	cittadhammo			20
-1617950933	::1	E	dependant_arising:ignorance	cittadhammo			-40
-1617951045	::1	E	dependant_arising:ignorance	cittadhammo			22
-1617951083	::1	E	dependant_arising:ignorance	cittadhammo			57
-1617951438	::1	E	dependant_arising:ignorance	cittadhammo			26
-1617951482	::1	E	dependant_arising:ignorance	cittadhammo			25
-1617952172	::1	E	dependant_arising:ignorance	cittadhammo			35
-1617952236	::1	E	dependant_arising:ignorance	cittadhammo			74
-1617952685	::1	E	dependant_arising:ignorance	cittadhammo			89
-1617952705	::1	E	dependant_arising:ignorance	cittadhammo			2
-1617953357	::1	E	dependant_arising:ignorance	cittadhammo			1
+1626782446	::1	E	dhamma:dhamma	cittadhammo			104
+1626782630	::1	E	dhamma:virtue	cittadhammo			7678
+1626782891	::1	E	dhamma:virtue	cittadhammo			772
+1626783079	::1	E	dhamma:right_action	cittadhammo			2294
+1626783115	::1	E	dhamma:right_action	cittadhammo			11
+1626783139	::1	E	dhamma:right_action	cittadhammo			4
+1626783261	::1	E	dhamma:right_speech	cittadhammo			11334
+1626783382	::1	E	dhamma:right_speech	cittadhammo			-14
+1626783406	::1	E	dhamma:right_speech	cittadhammo			4
+1626783519	::1	E	dhamma:right_livelihood	cittadhammo			8319
+1626783533	::1	E	dhamma:right_livelihood	cittadhammo			-41
+1626783710	::1	E	dhamma:heaven	cittadhammo			20
+1626783826	::1	C	dhamma:kamma	cittadhammo	created		10049
+1626806575	::1	E	dhamma:kamma	cittadhammo			23
+1626806837	::1	E	dhamma:renunciation	cittadhammo			72
+1626807030	::1	E	dhamma:renunciation	cittadhammo			75
+1626807312	::1	C	dhamma:nibbana	cittadhammo	created		6893
+1626807463	::1	E	dhamma:cessation	cittadhammo			19
+1626852303	::1	E	dhamma:1st_noble_truth	cittadhammo			7720
+1626852438	::1	E	dhamma:1st_noble_truth	cittadhammo			734
+1626852587	::1	E	dhamma:2nd_noble_truth	cittadhammo			44
+1626852680	::1	E	dhamma:cessation	cittadhammo			-26
+1626852800	::1	E	dhamma:cessation	cittadhammo			-31
+1626852934	::1	E	dhamma:1st_noble_truth	cittadhammo			18
+1626852991	::1	C	dhamma:dukkha	cittadhammo	created		4593
+1626853011	::1	E	dhamma:1st_noble_truth	cittadhammo			-734
+1626853174	::1	E	dhamma:2nd_noble_truth	cittadhammo			5
+1627071613	::1	C	topbar	cittadhammo	created		211
+1627072536	::1	E	sitemap	cittadhammo			33
+1627072584	::1	E	sitemap	cittadhammo			-33
+1627072594	::1	E	topbar	cittadhammo			-192
+1627072698	::1	E	start	cittadhammo			-35
+1627073040	::1	E	topbar	cittadhammo			15
+1627073065	::1	E	start	cittadhammo			-10
+1627073075	::1	E	topbar	cittadhammo			-15
+1627073324	::1	E	dependant_arising:dependant_arising	cittadhammo			-142
+1627073433	::1	E	patimokkha:patimokkha	cittadhammo			-8
+1627073622	::1	E	dependant_arising:dependant_arising	cittadhammo			13
+1627074306	::1	E	start	cittadhammo			12
+1627074380	::1	E	start	cittadhammo			66
+1627075210	::1	E	start	cittadhammo			9
+1627110186	::1	E	patimokkha:patimokkha	cittadhammo			8
+1627110227	::1	E	topbar	cittadhammo			50
+1627110294	::1	E	topbar	cittadhammo			79
+1627110316	::1	E	topbar	cittadhammo			7
+1627110370	::1	E	start	cittadhammo			63
+1627110509	::1	E	topbar	cittadhammo			-136
+1627110534	::1	R	topbar	cittadhammo	old revision restored (2021/07/24 07:05)	1627110316	136
+1627110552	::1	E	topbar	cittadhammo			-16
+1627112037	::1	E	topbar	cittadhammo			4
+1627112055	::1	E	topbar	cittadhammo			-1
+1627112213	::1	E	topbar	cittadhammo			2
+1627112236	::1	E	topbar	cittadhammo			4
+1627112256	::1	E	topbar	cittadhammo			-2
+1627112264	::1	E	topbar	cittadhammo			-3
+1627112318	::1	E	dhamma:dhamma	cittadhammo			0
+1627112333	::1	E	topbar	cittadhammo			1
+1627112345	::1	E	topbar	cittadhammo			-1
+1627112473	::1	E	dhamma:dhamma	cittadhammo			182
+1627112924	::1	E	start	cittadhammo			308
+1627112955	::1	E	start	cittadhammo			2
+1627112990	::1	E	start	cittadhammo			52
+1627113339	::1	E	start	cittadhammo			688
+1627113354	::1	E	start	cittadhammo			2
+1627113383	::1	E	start	cittadhammo			-1
+1627113543	::1	E	start	cittadhammo			170
+1627113594	::1	E	start	cittadhammo			26

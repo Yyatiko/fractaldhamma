@@ -1,7 +1,7 @@
-id,label,pageId
-Birth,Birth,dependant_arising:birth
-Test,Test,dependant_arising:dependant_arising
-Fabrication,Fabrication,dependant_arising:fabrication
-Dependant Arising,Dependant Arising,dependant_arising:headpage
-Ignorance,Ignorance,dependant_arising:ignorance
-Settings,Settings,dependant_arising:settings
+id,title,pageId
+Birth,Birth,doku.php?id=dependant_arising:birth
+Test,Test,doku.php?id=dependant_arising:dependant_arising
+Fabrication,Fabrication,doku.php?id=dependant_arising:fabrication
+Dependant Arising,Dependant Arising,doku.php?id=dependant_arising:headpage
+Ignorance,Ignorance,doku.php?id=dependant_arising:ignorance
+Settings,Settings,doku.php?id=dependant_arising:settings

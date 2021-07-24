@@ -1,5 +1,0 @@
-====== My Page 2 ======
-
-[[mynamesapce:mypage|]]
-
-[[mynamesapce:page3|]]

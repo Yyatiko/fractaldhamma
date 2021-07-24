@@ -12,7 +12,10 @@
 ',
 
 './data/pages/dependant_arising/ignorance.txt'=>'
-<a href="doku.php?id=dependant_arising:fabrication">Fabrication</a>
+<a href="doku.php?id=dependant_arising:ignorance#test"></a>
+<br/><br/><a href="doku.php?id=dependant_arising:fabrication">Fabrication</a>
+<br/><br/><a href="doku.php?id=dependant_arising:ignorance#consciousness"></a>
+<br/><br/><a href="doku.php?id=dependant_arising:ignorance#mybookmark"></a>
 ',
 
 './data/pages/dependant_arising/settings.txt'=>'
