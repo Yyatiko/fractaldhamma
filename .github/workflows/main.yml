@@ -14,4 +14,4 @@ jobs:
         server: fractaldhamma.c1.biz
         username: 2125268_lancelot
         password: ${{ secrets.ftp_password }}
-        server-dir: fractaldhamma.c1.biz/
+        server-dir: 
