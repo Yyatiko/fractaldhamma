@@ -11,7 +11,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: ftp.byethost5.com
-        username: b5_28245677
+        server: ftp.fractaldhamma.c1.biz
+        username: 2125268_lancelot
         password: ${{ secrets.ftp_password }}
         server-dir: fractaldhamma.22web.org/htdocs/
