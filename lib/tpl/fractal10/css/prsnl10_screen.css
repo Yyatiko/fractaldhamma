@@ -200,7 +200,10 @@ a:visited:active {
     text-decoration: none;
     color: __existing__;
 }
-a:link:hover,
+a:hover{
+  color: #a3dcff !important;
+}
+/*a:link:hover,*/
 a:link:focus,
 a:link:active,
 a:visited:hover,
