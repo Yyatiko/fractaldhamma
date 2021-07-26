@@ -1,4 +1,1 @@
-**[[start|Home]]**
-[[dependant_arising:dependant_arising|Dependant Arising]]
-[[dhamma:dhamma|Dhamma]] 
-[[patimokkha:patimokkha|Pāṭimokkha]]
+{{indexmenu>.#1| nopg}}

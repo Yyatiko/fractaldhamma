@@ -42,7 +42,7 @@ html {
 body {
     margin: 0 auto;
     /*background: #e4e4e4 url(images/background.png) repeat-x 0 0;*/
-    font: normal 130%/1.1em 'EB Garamond',Verdana,'Liberation Sans',Arial,Helvetica,sans-serif;
+    font: normal 128%/1.25em 'EB Garamond',Verdana,'Liberation Sans',Arial,Helvetica,sans-serif;
     /* same font stack should be used for ".dokuwiki div.toc" */
     z-index:1;
 
@@ -70,7 +70,7 @@ h4{
     margin: 0.3em auto 1em 0 !important;
 }
 h1 {
-    font-size: 1.7em; /* 32px, base 14px (see ".dokuwiki") */
+    font-size: 1.5em; /* 32px, base 14px (see ".dokuwiki") */
     line-height: 2.857em; /* 40px, base 14px (see ".dokuwiki") */
 }
 h2 {
@@ -558,7 +558,7 @@ div#pagewrap {
     text-align: right;
     vertical-align: top;
     margin-top: 17px;
-    margin-top: 92px;
+    margin-top: 82px;
     margin-left: 20px;
     margin-right: 20px;
     width: 110px;
@@ -570,7 +570,7 @@ div#pagewrap {
     text-align: left;
     vertical-align: top;
     margin-top: 17px;
-    margin-top: 92px;
+    margin-top: 82px;
     margin-left: 20px;
     margin-right: 20px;
     width: 110px;
@@ -642,14 +642,18 @@ div#pagewrap {
     margin: 1em 0;
     padding: 0.2em 0;
     font-size: 0.714em; /* 10px (base: 14px) */
-    color: __text_neu__;
+    /* color: __text_neu__; */
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 570px;
 }
 #tmpl_footer a,
 #tmpl_footer a:link,
 #tmpl_footer a:visited {
-    color: __text_neu__;
+    /*color: __text_neu__;*/
     border-bottom: none !important;
+    display: inline-block;
 }
 #tmpl_footer a:hover {
    color: __existing__;
@@ -659,7 +663,8 @@ div#pagewrap {
     margin-right: 1.5em;
 }
 #tmpl_footer #tmpl_footer_actlinksright {
-    float: right;
+    /*float: right;*/
+    text-align: right; /* remove this line to come back to the normal float */
 }
 #tmpl_footer #tmpl_footer_metainfo {
     margin-top: 1em;
@@ -1240,6 +1245,8 @@ html.popup #media__opts br {
 }
 
 /* top bar */
+
+
 body{ /* avoid collision with sitemap/home page*/
   padding-top: 20px;
 }
@@ -1249,6 +1256,11 @@ body{ /* avoid collision with sitemap/home page*/
         top: 0;
         left: 0;
         width: 100%;
+        background-color: #333;
+        background-color: __background_alt__;
+        box-shadow: 0 1px 3px #999;
+        z-index:2;
+
     }
     .topbar ul {
         text-align: center;
@@ -1269,10 +1281,13 @@ body{ /* avoid collision with sitemap/home page*/
         padding: 0 10px;
         display: inline-block;
         font-size: 85%;
+
     }
     .topbar ul li a {
         display: inline-block;
         min-height: 20px; /* make sure icons are not cut off (most icons are 16x16) */
+        font-weight:normal !important;
+
     }
 
     /* for IE7 */
@@ -1328,12 +1343,13 @@ body{ /* avoid collision with sitemap/home page*/
   background-color: __background_alt__;
   box-shadow: 0 1px 3px #999;
 
-  position: fixed; /* Set the navbar to fixed position */
+  position:absolute; /* Set the navbar to fixed position, change that to change behaviour like dosent follow */
   top: 0; /* Position the navbar at the top of the page */
   left: 0;
   width: 100%; /* Full width */
   text-align: center;
   z-index:2;
+  transition: top 0.6s; /* Transition effect when sliding down (and up) */
 }
 
 /* navbar */
@@ -1346,7 +1362,6 @@ body{ /* avoid collision with sitemap/home page*/
   /*text-decoration: none;*/
   margin: 0 auto;
   font-size: 85%;
-
 }
 
 .navbar p {
@@ -1361,6 +1376,27 @@ body{ /* avoid collision with sitemap/home page*/
 }
 
 /* Main content */
-.main {
+body {
   margin-top: 30px; /* Add a top margin to avoid content overlay */
+}
+
+/* logo */
+
+.logo {
+  position:absolute; /* Set the navbar to fixed position, change that to change behaviour like dosent follow */
+  top: 0; /* Position the navbar at the top of the page */
+  left: 0;
+  text-align: left;
+  z-index:3;
+}
+
+.logo a {
+  font-weight:600;
+
+  display: inline-block;
+  /*color: #f2f2f2;*/
+  padding: 5px 16px;
+  /*text-decoration: none;*/
+  margin: 0 auto;
+  font-size: 85%;
 }

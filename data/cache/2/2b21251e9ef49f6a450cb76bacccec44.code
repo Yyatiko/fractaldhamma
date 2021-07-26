@@ -1,0 +1,51 @@
+<span class="kw2">&lt;?php</span>
+&nbsp;
+        <span class="re0">$do</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st0">&quot;do&quot;</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+        <span class="kw1">if</span><span class="br0">&#40;</span><span class="re0">$do</span> <span class="sy0">!=</span> <span class="st0">&quot;admin&quot;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+&nbsp;
+                <span class="re0">$idpage</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st0">&quot;id&quot;</span><span class="br0">&#93;</span><span class="sy0">;</span>
+                <span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$idpage</span> <span class="sy0">==</span> <span class="st0">&quot;&quot;</span><span class="br0">&#41;</span> <span class="re0">$idpage</span> <span class="sy0">=</span> <span class="st0">&quot;start&quot;</span><span class="sy0">;</span>
+                <span class="re0">$name</span> <span class="sy0">=</span> <span class="st_h">'./data/pages/'</span><span class="sy0">.</span><span class="re0">$idpage</span><span class="sy0">.</span><span class="st_h">'.txt'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;a id=&quot;dokuwiki__top&quot;&gt;&lt;/a&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="co1">// Matrix head //</span>
+&nbsp;
+                   <span class="co1">// get page name //</span>
+&nbsp;
+                <span class="re0">$contents0</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span><span class="sy0">;</span>
+                <span class="re0">$regex2</span> <span class="sy0">=</span> <span class="st0">&quot;/(?&lt;=(====== ))(.*?)(?=( ======))/&quot;</span><span class="sy0">;</span>  <span class="co1">// $page title</span>
+                <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex2</span><span class="sy0">,</span> <span class="re0">$contents0</span><span class="sy0">,</span> <span class="re0">$matches2</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">// title of page</span>
+                <span class="re0">$title</span> <span class="sy0">=</span> <span class="re0">$matches2</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+                   <span class="co1">// show html matric head // </span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;div id=&quot;headMatrix&quot; style = &quot;text-align: center;&quot;&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/network.html&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+                <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'&quot;selected&quot;:&quot;4 Noble Truths&quot;'</span><span class="sy0">,</span> <span class="st_h">'&quot;selected&quot;:&quot;'</span><span class="sy0">.</span><span class="re0">$title</span><span class="sy0">.</span><span class="st_h">'&quot;'</span><span class="sy0">,</span> <span class="re0">$contents</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//ny default it focus on the 4 Noble Truths, what a good computer...</span>
+                <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st0">&quot;network_files&quot;</span><span class="sy0">,</span> <span class="st0">&quot;./lib/tpl/prsnl10/js/network_files&quot;</span><span class="sy0">,</span> <span class="re0">$contents</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//ny default it focus on the 4 Noble Truths, what a good computer...                </span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="re0">$contents</span><span class="sy0">;</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;/div&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="co1">// right nav//</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;div id=&quot;nav0&quot; style = &quot;text-align: right;&quot;&gt;'</span><span class="sy0">;</span>
+                <span class="co1">//echo 'navP';</span>
+                <span class="co1">//print_r($_GET);</span>
+&nbsp;
+&nbsp;
+                <span class="kw1">include</span><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/navParent.php&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+                <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$navParent</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">echo</span> <span class="re0">$navParent</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;/div&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="br0">&#125;</span>
+&nbsp;
+        <span class="sy1">?&gt;</span>

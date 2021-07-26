@@ -1,0 +1,352 @@
+
+<h1 id="license_notice">LICENSE &amp; NOTICE</h1>
+<div class="level1">
+
+<p>
+<em>Except where otherwise noted, content on this wiki is licensed under the following license: CC Attribution-Noncommercial-Share Alike 4.0 International</em>
+</p>
+
+<p>
+This site use the <a href="https://www.dokuwiki.org/dokuwiki" class="urlextern" title="https://www.dokuwiki.org/dokuwiki" rel="ugc nofollow">dokuwiki</a> software with a modified <a href="https://www.dokuwiki.org/template:prsnl10" class="urlextern" title="https://www.dokuwiki.org/template:prsnl10" rel="ugc nofollow">prsnl10 template</a>.
+</p>
+
+<p>
+All the sutta comes from the translations by Ajahn Thanissaro <a href="http://www.dhammatalks.org" class="urlextern" title="http://www.dhammatalks.org" rel="ugc nofollow">dhammatalks.org</a> and access to insight.
+</p>
+
+<p>
+Other inspirations are from :
+</p>
+<ul>
+<li class="level1"><div class="li"> <a href="http://buddhadust.net/" class="urlextern" title="http://buddhadust.net/" rel="ugc nofollow">Buddhadust</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://en.wikipedia.org/wiki/Outline_of_Buddhism" class="urlextern" title="https://en.wikipedia.org/wiki/Outline_of_Buddhism" rel="ugc nofollow">Outilne of Buddhisme (wikipedia)</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://www.accesstoinsight.org/ptf/index.html" class="urlextern" title="https://www.accesstoinsight.org/ptf/index.html" rel="ugc nofollow">Access to Insight, A path to Freedom</a></div>
+</li>
+<li class="level1"><div class="li"> The Wings to Awakening</div>
+</li>
+<li class="level1"><div class="li"> The Shape of Suffering</div>
+</li>
+<li class="level1"><div class="li"> The Paradox of Becoming</div>
+</li>
+<li class="level1"><div class="li"> Passage fractal Daniel Ingram</div>
+</li>
+<li class="level1"><div class="li"> Espace cohérent de pensée clot par opération de pensée. (système de croyance) voir Idriss Aberkane</div>
+</li>
+</ul>
+
+</div>
+
+<h1 id="how_it_works_old_version">How it Works (old version)</h1>
+<div class="level1">
+
+<p>
+The principal code that create the different files is matrix.php. It is executed via the plugin <a href="https://www.dokuwiki.org/plugin:inclform" class="urlextern" title="https://www.dokuwiki.org/plugin:inclform" rel="ugc nofollow">include form</a> when the page <a href="/~lancelot/GitHub/fractaldhamma/doku.php?id=matrix" class="wikilink2" title="matrix" rel="nofollow" data-wiki-id="matrix">matrix</a> is updated (it can be executed on every page to instantly create the side menus if added to main.php). It creates two csv files (<a href="/~lancelot/GitHub/fractaldhamma/lib/exe/fetch.php?media=nodes.csv" class="media mediafile mf_csv wikilink2" title="nodes.csv">nodes.csv</a> &amp; <a href="/~lancelot/GitHub/fractaldhamma/lib/exe/fetch.php?media=links.csv" class="media mediafile mf_csv wikilink2" title="links.csv">links.csv</a>), two php files in the folder ./data/forms and show the table in <a href="/~lancelot/GitHub/fractaldhamma/doku.php?id=matrix" class="wikilink2" title="matrix" rel="nofollow" data-wiki-id="matrix">matrix</a>. The csv files are used to run a code in <a href="https://www.r-project.org/" class="urlextern" title="https://www.r-project.org/" rel="ugc nofollow">R</a> to create the network image (thanks to <a href="https://kateto.net/network-visualization" class="urlextern" title="https://kateto.net/network-visualization" rel="ugc nofollow">kateto.net</a>) and the php files navChildren.php and navParent.php contain the array used by main.php to display the two column on each side of every page. main.php is the main page used to create pages from the prsnl10 template. 
+</p>
+<p><a class="folder" href="#folded_79286c1da49ef730a2332eb35c593d6a_1">matrix.php </a></p><div class="folded hidden" id="folded_79286c1da49ef730a2332eb35c593d6a_1"><pre class="code php"><span class="kw2">&lt;?php</span>
+&nbsp;
+<span class="kw1">include</span> <span class="br0">&#40;</span><span class="st0">&quot;./data/forms/exclude.php&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$myfile</span> <span class="sy0">=</span> <a href="http://www.php.net/fopen"><span class="kw3">fopen</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/navChildren.php&quot;</span><span class="sy0">,</span> <span class="st0">&quot;w&quot;</span><span class="br0">&#41;</span> or <a href="http://www.php.net/die"><span class="kw3">die</span></a><span class="br0">&#40;</span><span class="st0">&quot;Unable to open file!&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$mylinks</span> <span class="sy0">=</span> <a href="http://www.php.net/fopen"><span class="kw3">fopen</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/csv/links.csv&quot;</span><span class="sy0">,</span> <span class="st0">&quot;w&quot;</span><span class="br0">&#41;</span> or <a href="http://www.php.net/die"><span class="kw3">die</span></a><span class="br0">&#40;</span><span class="st0">&quot;Unable to open file!&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="re0">$mynodes</span> <span class="sy0">=</span> <a href="http://www.php.net/fopen"><span class="kw3">fopen</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/csv/nodes.csv&quot;</span><span class="sy0">,</span> <span class="st0">&quot;w&quot;</span><span class="br0">&#41;</span> or <a href="http://www.php.net/die"><span class="kw3">die</span></a><span class="br0">&#40;</span><span class="st0">&quot;Unable to open file!&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="re0">$regex</span> <span class="sy0">=</span> <span class="st0">&quot;/(?&lt;=(\[\[))(.*?)(?=(\|))/&quot;</span><span class="sy0">;</span>           <span class="co1">// all links in $page</span>
+<span class="re0">$regex2</span> <span class="sy0">=</span> <span class="st0">&quot;/(?&lt;=(====== ))(.*?)(?=( ======))/&quot;</span><span class="sy0">;</span>  <span class="co1">// $page title</span>
+&nbsp;
+<span class="re0">$pages</span> <span class="sy0">=</span> <a href="http://www.php.net/glob"><span class="kw3">glob</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/pages/*.txt&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<a href="http://www.php.net/natsort"><span class="kw3">natsort</span></a><span class="br0">&#40;</span><span class="re0">$pages</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Children loop</span>
+&nbsp;
+<span class="kw1">echo</span> <span class="st0">&quot;&lt;h3&gt;Children&lt;/h3&gt;&quot;</span> <span class="sy0">;</span>
+&nbsp;
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st_h">'&lt;?php $navChildren=array('</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mynodes</span><span class="sy0">,</span>  <span class="st_h">'id,label,path'</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mynodes</span><span class="sy0">,</span>  <span class="st0">&quot;<span class="es1">\n</span>&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mylinks</span><span class="sy0">,</span>  <span class="st_h">'from,to'</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mylinks</span><span class="sy0">,</span>  <span class="st0">&quot;<span class="es1">\n</span>&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+<span class="kw1">foreach</span> <span class="br0">&#40;</span><span class="re0">$pages</span> <span class="kw1">as</span> <span class="re0">$page</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+&nbsp;
+  <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/in_array"><span class="kw3">in_array</span></a><span class="br0">&#40;</span><span class="re0">$page</span><span class="sy0">,</span> <span class="re0">$exclude</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+  <span class="br0">&#123;</span>
+        <span class="kw1">continue</span><span class="sy0">;</span>
+  <span class="br0">&#125;</span>
+&nbsp;
+  <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="re0">$page</span><span class="br0">&#41;</span><span class="sy0">;</span>
+  <span class="re0">$pagename</span><span class="sy0">=</span><a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'./data/pages/'</span><span class="sy0">,</span><span class="st_h">''</span><span class="sy0">,</span><span class="re0">$page</span><span class="br0">&#41;</span><span class="sy0">;</span> 
+  <span class="re0">$pagename</span><span class="sy0">=</span><a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'.txt'</span><span class="sy0">,</span><span class="st_h">''</span><span class="sy0">,</span><span class="re0">$pagename</span><span class="br0">&#41;</span><span class="sy0">;</span> 
+&nbsp;
+  <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex</span><span class="sy0">,</span> <span class="re0">$contents</span><span class="sy0">,</span> <span class="re0">$matches</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//links in page</span>
+  <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex2</span><span class="sy0">,</span> <span class="re0">$contents</span><span class="sy0">,</span> <span class="re0">$matches2</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">// title of page</span>
+&nbsp;
+  <span class="co1">//echo '&lt;/br&gt; Path = '.$page.'&lt;/br&gt;';</span>
+  <span class="co1">//echo 'First header = '.$matches2[0][0].'&lt;/br&gt;';</span>
+  <span class="kw1">echo</span> <span class="st_h">'&lt;/br&gt;&lt;a href=&quot;'</span><span class="sy0">.</span><span class="re0">$pagename</span><span class="sy0">.</span><span class="st_h">'&quot;&gt;'</span><span class="sy0">.</span><span class="re0">$matches2</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">.</span><span class="st_h">'&lt;/a&gt;&lt;/br&gt;'</span><span class="sy0">;</span>
+&nbsp;
+  <span class="re0">$title</span> <span class="sy0">=</span> <span class="re0">$matches2</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+  <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st0">&quot;'&quot;</span><span class="sy0">.</span><span class="re0">$page</span><span class="sy0">.</span><span class="st0">&quot;'=&gt;'&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+  <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mynodes</span><span class="sy0">,</span>  <span class="re0">$title</span><span class="sy0">.</span><span class="st_h">','</span><span class="sy0">.</span><span class="re0">$title</span><span class="sy0">.</span><span class="st_h">','</span><span class="sy0">.</span><span class="re0">$pagename</span><span class="br0">&#41;</span> <span class="sy0">;</span>
+  <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mynodes</span><span class="sy0">,</span>  <span class="st0">&quot;<span class="es1">\n</span>&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+  <span class="kw1">if</span><span class="br0">&#40;</span><a href="http://www.php.net/count"><span class="kw3">count</span></a><span class="br0">&#40;</span><span class="re0">$matches</span><span class="br0">&#41;</span><span class="sy0">==</span><span class="nu0">0</span><span class="br0">&#41;</span> <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st0">&quot;'&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+  <span class="kw1">foreach</span> <span class="br0">&#40;</span><span class="re0">$matches</span> <span class="kw1">as</span> <span class="re0">$match</span><span class="br0">&#41;</span>
+  <span class="br0">&#123;</span>
+    <span class="co1">// $match[0] contains the entire match as described above</span>
+    <span class="co1">//echo '-&gt;';</span>
+    <span class="re0">$undermatch</span> <span class="sy0">=</span> <a href="http://www.php.net/preg_replace"><span class="kw3">preg_replace</span></a><span class="br0">&#40;</span><span class="st_h">'/\s+/'</span><span class="sy0">,</span> <span class="st_h">'_'</span><span class="sy0">,</span> <span class="re0">$match</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$undermatch</span> <span class="sy0">=</span> <a href="http://www.php.net/strtolower"><span class="kw3">strtolower</span></a><span class="br0">&#40;</span><span class="re0">$undermatch</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="co1">//echo $undermatch;</span>
+    <span class="co1">//echo &quot;&lt;/br&gt;&quot;;</span>
+&nbsp;
+    <span class="re0">$pathsubpage</span> <span class="sy0">=</span> <span class="st_h">'./data/pages/'</span><span class="sy0">.</span><span class="re0">$undermatch</span><span class="sy0">.</span><span class="st_h">'.txt'</span><span class="sy0">;</span>
+&nbsp;
+    <span class="re0">$subpagecontents</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="re0">$pathsubpage</span><span class="br0">&#41;</span><span class="sy0">;</span>                        <span class="co1">// load subpage contents</span>
+    <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex2</span><span class="sy0">,</span> <span class="re0">$subpagecontents</span><span class="sy0">,</span> <span class="re0">$matches3</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="re0">$titlesubpagepage</span> <span class="sy0">=</span> <span class="re0">$matches3</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">echo</span> <span class="st_h">'&amp;nbsp&amp;nbsp&amp;nbsp-&gt; '</span><span class="sy0">;</span>
+    <span class="kw1">echo</span> <span class="st_h">'&lt;a href='</span><span class="sy0">.</span><span class="re0">$undermatch</span><span class="sy0">.</span><span class="st_h">'&gt;'</span><span class="sy0">.</span><span class="re0">$titlesubpagepage</span><span class="sy0">.</span><span class="st_h">'&lt;/a&gt;&lt;/br&gt;'</span><span class="sy0">;</span>
+&nbsp;
+    <span class="co1">//fwrite($myfile, '&lt;a href=doku.php?id='.$undermatch.'&gt;'.$titlesubpagepage.'&lt;/a&gt;');</span>
+    <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span> <span class="st_h">'&lt;a href='</span><span class="sy0">.</span><span class="re0">$undermatch</span><span class="sy0">.</span><span class="st_h">'&gt;'</span><span class="sy0">.</span><span class="re0">$titlesubpagepage</span><span class="sy0">.</span><span class="st_h">'&lt;/a&gt;'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span> <span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+    <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mylinks</span><span class="sy0">,</span>  <span class="re0">$title</span><span class="sy0">.</span><span class="st_h">','</span><span class="sy0">.</span><span class="re0">$titlesubpagepage</span><span class="br0">&#41;</span> <span class="sy0">;</span>
+    <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$mylinks</span><span class="sy0">,</span>  <span class="st0">&quot;<span class="es1">\n</span>&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+    <span class="kw1">if</span><span class="br0">&#40;</span> <span class="sy0">!</span><a href="http://www.php.net/next"><span class="kw3">next</span></a><span class="br0">&#40;</span> <span class="re0">$matches</span> <span class="br0">&#41;</span> <span class="br0">&#41;</span> <span class="br0">&#123;</span>
+        <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st0">&quot;'&quot;</span> <span class="br0">&#41;</span><span class="sy0">;</span>
+    <span class="br0">&#125;</span>
+    <span class="kw1">else</span> <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st_h">'&lt;br/&gt;&lt;br/&gt;'</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+&nbsp;
+    <span class="br0">&#125;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+  <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st_h">','</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+  <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span> <span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+  <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span> <span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<span class="br0">&#125;</span>
+&nbsp;
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="sy0">,</span>  <span class="st_h">') ?&gt;'</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+<a href="http://www.php.net/fclose"><span class="kw3">fclose</span></a><span class="br0">&#40;</span><span class="re0">$mylinks</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<a href="http://www.php.net/fclose"><span class="kw3">fclose</span></a><span class="br0">&#40;</span><span class="re0">$mynodes</span><span class="br0">&#41;</span><span class="sy0">;</span>  
+<a href="http://www.php.net/fclose"><span class="kw3">fclose</span></a><span class="br0">&#40;</span><span class="re0">$myfile</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+  <span class="co1">// Parent loop</span>
+&nbsp;
+<span class="kw1">echo</span> <span class="st0">&quot;&lt;/br&gt;&lt;/br&gt;&lt;h3&gt;Parent&lt;/h3&gt;&quot;</span> <span class="sy0">;</span>
+&nbsp;
+&nbsp;
+<span class="re0">$myfile2</span> <span class="sy0">=</span> <a href="http://www.php.net/fopen"><span class="kw3">fopen</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/navParent.php&quot;</span><span class="sy0">,</span> <span class="st0">&quot;w&quot;</span><span class="br0">&#41;</span> or <a href="http://www.php.net/die"><span class="kw3">die</span></a><span class="br0">&#40;</span><span class="st0">&quot;Unable to open file!&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span>  <span class="st_h">'&lt;?php $navParent=array('</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+<span class="kw1">foreach</span> <span class="br0">&#40;</span><span class="re0">$pages</span> <span class="kw1">as</span> <span class="re0">$page</span><span class="br0">&#41;</span>
+<span class="br0">&#123;</span>
+    <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/in_array"><span class="kw3">in_array</span></a><span class="br0">&#40;</span><span class="re0">$page</span><span class="sy0">,</span> <span class="re0">$exclude</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+       <span class="br0">&#123;</span>
+           <span class="kw1">continue</span><span class="sy0">;</span>
+       <span class="br0">&#125;</span>
+&nbsp;
+    <span class="re0">$pagename</span><span class="sy0">=</span><a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'./data/pages/'</span><span class="sy0">,</span><span class="st_h">''</span><span class="sy0">,</span><span class="re0">$page</span><span class="br0">&#41;</span><span class="sy0">;</span> 
+    <span class="re0">$pagename</span><span class="sy0">=</span><a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'.txt'</span><span class="sy0">,</span><span class="st_h">''</span><span class="sy0">,</span><span class="re0">$pagename</span><span class="br0">&#41;</span><span class="sy0">;</span> 
+&nbsp;
+    <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span>  <span class="st0">&quot;'&quot;</span><span class="sy0">.</span><span class="re0">$page</span><span class="sy0">.</span><span class="st0">&quot;'=&gt;'&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>   
+    <span class="co1">//echo $page;</span>
+    <span class="co1">//echo &quot;&lt;/br&gt;&quot; ;</span>
+&nbsp;
+    <span class="re0">$contents3</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="re0">$page</span><span class="br0">&#41;</span><span class="sy0">;</span>
+    <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex2</span><span class="sy0">,</span> <span class="re0">$contents3</span><span class="sy0">,</span> <span class="re0">$matchesP3</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span><span class="co1">// title of page</span>
+    <span class="re0">$titleP3</span> <span class="sy0">=</span> <span class="re0">$matchesP3</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span> 
+&nbsp;
+    <span class="kw1">echo</span> <span class="st_h">'&lt;/br&gt;&lt;a href=&quot;'</span><span class="sy0">.</span><span class="re0">$pagename</span><span class="sy0">.</span><span class="st_h">'&quot;&gt;'</span><span class="sy0">.</span><span class="re0">$titleP3</span><span class="sy0">.</span><span class="st_h">'&lt;/a&gt;&lt;/br&gt;'</span><span class="sy0">;</span> 
+&nbsp;
+    <span class="kw1">foreach</span> <span class="br0">&#40;</span><span class="re0">$pages</span> <span class="kw1">as</span> <span class="re0">$page2</span><span class="br0">&#41;</span>
+    <span class="br0">&#123;</span>
+&nbsp;
+       <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/in_array"><span class="kw3">in_array</span></a><span class="br0">&#40;</span><span class="re0">$page2</span><span class="sy0">,</span> <span class="re0">$exclude</span><span class="br0">&#41;</span><span class="br0">&#41;</span>
+       <span class="br0">&#123;</span>
+           <span class="kw1">continue</span><span class="sy0">;</span>
+       <span class="br0">&#125;</span>
+&nbsp;
+       <span class="re0">$contents2</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="re0">$page2</span><span class="br0">&#41;</span><span class="sy0">;</span>
+       <span class="re0">$page2name</span><span class="sy0">=</span><a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'./data/pages/'</span><span class="sy0">,</span><span class="st_h">''</span><span class="sy0">,</span><span class="re0">$page2</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//get pagename</span>
+       <span class="re0">$page2name</span><span class="sy0">=</span><a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'.txt'</span><span class="sy0">,</span><span class="st_h">''</span><span class="sy0">,</span><span class="re0">$page2name</span><span class="br0">&#41;</span><span class="sy0">;</span> 
+&nbsp;
+&nbsp;
+       <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex</span><span class="sy0">,</span> <span class="re0">$contents2</span><span class="sy0">,</span> <span class="re0">$matchesP</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">// links in page2</span>
+       <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex2</span><span class="sy0">,</span> <span class="re0">$contents2</span><span class="sy0">,</span> <span class="re0">$matchesP2</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span><span class="co1">// title of page2</span>
+&nbsp;
+       <span class="re0">$titleP</span> <span class="sy0">=</span> <span class="re0">$matchesP2</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>   <span class="co1">// page qui pourrait soucrer</span>
+       <span class="re0">$undertitleP</span> <span class="sy0">=</span> <a href="http://www.php.net/preg_replace"><span class="kw3">preg_replace</span></a><span class="br0">&#40;</span><span class="st_h">'/\s+/'</span><span class="sy0">,</span> <span class="st_h">'_'</span><span class="sy0">,</span> <span class="re0">$titleP</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+       <span class="co1">//if(count($matchesP)==0) fwrite($myfile2,  &quot;'&quot;);</span>
+       <span class="kw1">foreach</span> <span class="br0">&#40;</span><span class="re0">$matchesP</span> <span class="kw1">as</span> <span class="re0">$matchP</span><span class="br0">&#41;</span> <span class="co1">// cherche dans les liens de la page</span>
+       <span class="br0">&#123;</span>
+&nbsp;
+          <span class="re0">$undermatchP</span> <span class="sy0">=</span> <a href="http://www.php.net/preg_replace"><span class="kw3">preg_replace</span></a><span class="br0">&#40;</span><span class="st_h">'/\s+/'</span><span class="sy0">,</span> <span class="st_h">'_'</span><span class="sy0">,</span> <span class="re0">$matchP</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+          <span class="re0">$undermatchP</span> <span class="sy0">=</span> <a href="http://www.php.net/strtolower"><span class="kw3">strtolower</span></a><span class="br0">&#40;</span><span class="re0">$undermatchP</span><span class="br0">&#41;</span><span class="sy0">;</span>
+          <span class="re0">$pathsubpageP</span> <span class="sy0">=</span> <span class="st_h">'./data/pages/'</span><span class="sy0">.</span><span class="re0">$undermatchP</span><span class="sy0">.</span><span class="st_h">'.txt'</span><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+          <span class="kw1">if</span><span class="br0">&#40;</span><span class="re0">$pathsubpageP</span> <span class="sy0">==</span> <span class="re0">$page</span><span class="br0">&#41;</span> <span class="co1">// si elle source page</span>
+          <span class="br0">&#123;</span>
+              <span class="kw1">echo</span> <span class="st_h">'&amp;nbsp&amp;nbsp&amp;nbsp&lt;- '</span><span class="sy0">;</span>
+              <span class="co1">//echo $titleP; </span>
+              <span class="co1">//echo '('.$page2.')';</span>
+              <span class="kw1">echo</span> <span class="st_h">'&lt;a href='</span><span class="sy0">.</span><span class="re0">$page2name</span><span class="sy0">.</span><span class="st_h">'&gt;'</span> <span class="sy0">.</span><span class="re0">$titleP</span><span class="sy0">.</span> <span class="st_h">'&lt;/a&gt;'</span><span class="sy0">;</span>
+              <span class="kw1">echo</span> <span class="st_h">'&lt;/br&gt;'</span><span class="sy0">;</span>
+&nbsp;
+              <span class="co1">//fwrite($myfile2, '&lt;a href=doku.php?id=' .$page2name.'&gt;' .$titleP. '&lt;/a&gt;');</span>
+              <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span> <span class="st_h">'&lt;a href='</span><span class="sy0">.</span><span class="re0">$page2name</span><span class="sy0">.</span><span class="st_h">'&gt;'</span> <span class="sy0">.</span><span class="re0">$titleP</span><span class="sy0">.</span> <span class="st_h">'&lt;/a&gt;'</span><span class="br0">&#41;</span><span class="sy0">;</span>
+              <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span> <span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+              <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span>  <span class="st_h">'&lt;br/&gt;&lt;br/&gt;'</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+          <span class="br0">&#125;</span>
+&nbsp;
+&nbsp;
+       <span class="br0">&#125;</span>
+&nbsp;
+       <span class="co1">//if( !next( $pages ) ) {</span>
+       <span class="co1">//       fwrite($myfile2,  &quot;'&quot; );</span>
+       <span class="co1">//}</span>
+&nbsp;
+&nbsp;
+   <span class="br0">&#125;</span>
+&nbsp;
+   <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span>  <span class="st0">&quot;',&quot;</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+   <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span> <span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+   <a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span> <span class="st0">&quot;<span class="es1">\n</span>&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+<span class="br0">&#125;</span>
+&nbsp;
+<a href="http://www.php.net/fwrite"><span class="kw3">fwrite</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="sy0">,</span>  <span class="st_h">') ?&gt;'</span> <span class="br0">&#41;</span> <span class="sy0">;</span>
+&nbsp;
+<a href="http://www.php.net/fclose"><span class="kw3">fclose</span></a><span class="br0">&#40;</span><span class="re0">$myfile2</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+<span class="sy1">?&gt;</span></pre>
+</div>
+<p>
+The main.php file is the one that is used to create pages in the template prsnl10. I added two parts to it.
+</p>
+<p><a class="folder" href="#folded_79286c1da49ef730a2332eb35c593d6a_2">in main.php </a></p><div class="folded hidden" id="folded_79286c1da49ef730a2332eb35c593d6a_2"><pre class="code php"><span class="kw2">&lt;?php</span>
+&nbsp;
+        <span class="re0">$do</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st0">&quot;do&quot;</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+&nbsp;
+&nbsp;
+        <span class="kw1">if</span><span class="br0">&#40;</span><span class="re0">$do</span> <span class="sy0">!=</span> <span class="st0">&quot;admin&quot;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+&nbsp;
+                <span class="re0">$idpage</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st0">&quot;id&quot;</span><span class="br0">&#93;</span><span class="sy0">;</span>
+                <span class="kw1">if</span> <span class="br0">&#40;</span><span class="re0">$idpage</span> <span class="sy0">==</span> <span class="st0">&quot;&quot;</span><span class="br0">&#41;</span> <span class="re0">$idpage</span> <span class="sy0">=</span> <span class="st0">&quot;start&quot;</span><span class="sy0">;</span>
+                <span class="re0">$name</span> <span class="sy0">=</span> <span class="st_h">'./data/pages/'</span><span class="sy0">.</span><span class="re0">$idpage</span><span class="sy0">.</span><span class="st_h">'.txt'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;a id=&quot;dokuwiki__top&quot;&gt;&lt;/a&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="co1">// Matrix head //</span>
+&nbsp;
+                   <span class="co1">// get page name //</span>
+&nbsp;
+                <span class="re0">$contents0</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="re0">$name</span><span class="br0">&#41;</span><span class="sy0">;</span>
+                <span class="re0">$regex2</span> <span class="sy0">=</span> <span class="st0">&quot;/(?&lt;=(====== ))(.*?)(?=( ======))/&quot;</span><span class="sy0">;</span>  <span class="co1">// $page title</span>
+                <a href="http://www.php.net/preg_match_all"><span class="kw3">preg_match_all</span></a><span class="br0">&#40;</span><span class="re0">$regex2</span><span class="sy0">,</span> <span class="re0">$contents0</span><span class="sy0">,</span> <span class="re0">$matches2</span><span class="sy0">,</span> PREG_SET_ORDER<span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">// title of page</span>
+                <span class="re0">$title</span> <span class="sy0">=</span> <span class="re0">$matches2</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="br0">&#91;</span><span class="nu0">0</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+                   <span class="co1">// show html matric head // </span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;div id=&quot;headMatrix&quot; style = &quot;text-align: center;&quot;&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/file_get_contents"><span class="kw3">file_get_contents</span></a><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/network.html&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+&nbsp;
+                <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st_h">'&quot;selected&quot;:&quot;4 Noble Truths&quot;'</span><span class="sy0">,</span> <span class="st_h">'&quot;selected&quot;:&quot;'</span><span class="sy0">.</span><span class="re0">$title</span><span class="sy0">.</span><span class="st_h">'&quot;'</span><span class="sy0">,</span> <span class="re0">$contents</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//ny default it focus on the 4 Noble Truths, what a good computer...</span>
+                <span class="re0">$contents</span> <span class="sy0">=</span> <a href="http://www.php.net/str_replace"><span class="kw3">str_replace</span></a><span class="br0">&#40;</span><span class="st0">&quot;network_files&quot;</span><span class="sy0">,</span> <span class="st0">&quot;./lib/tpl/prsnl10/js/network_files&quot;</span><span class="sy0">,</span> <span class="re0">$contents</span><span class="br0">&#41;</span><span class="sy0">;</span> <span class="co1">//ny default it focus on the 4 Noble Truths, what a good computer...                </span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="re0">$contents</span><span class="sy0">;</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;/div&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="co1">// right nav//</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;div id=&quot;nav0&quot; style = &quot;text-align: right;&quot;&gt;'</span><span class="sy0">;</span>
+                <span class="co1">//echo 'navP';</span>
+                <span class="co1">//print_r($_GET);</span>
+&nbsp;
+&nbsp;
+                <span class="kw1">include</span><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/navParent.php&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+                <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$navParent</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">echo</span> <span class="re0">$navParent</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+                <span class="kw1">echo</span> <span class="st_h">'&lt;/div&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="br0">&#125;</span>
+&nbsp;
+        <span class="sy1">?&gt;</span></pre>
+</div>
+<p>
+The second one 
+</p>
+<p><a class="folder" href="#folded_79286c1da49ef730a2332eb35c593d6a_3">in main.php </a></p><div class="folded hidden" id="folded_79286c1da49ef730a2332eb35c593d6a_3"><pre class="code php"><span class="kw2">&lt;?php</span>
+&nbsp;
+                <span class="kw1">if</span><span class="br0">&#40;</span><span class="re0">$do</span> <span class="sy0">!=</span> <span class="st0">&quot;admin&quot;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+&nbsp;
+                        <span class="kw1">echo</span> <span class="st_h">'&lt;div id=&quot;nav0&quot;&gt;'</span><span class="sy0">;</span>
+                        <span class="co1">//echo $_GET[&quot;id&quot;];</span>
+&nbsp;
+                        <span class="re0">$idpage</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st0">&quot;id&quot;</span><span class="br0">&#93;</span><span class="sy0">;</span>
+                        <span class="re0">$name</span> <span class="sy0">=</span> <span class="st_h">'./data/pages/'</span><span class="sy0">.</span><span class="re0">$idpage</span><span class="sy0">.</span><span class="st_h">'.txt'</span><span class="sy0">;</span>
+&nbsp;
+                        <span class="kw1">include</span><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/navChildren.php&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+                        <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$navChildren</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">echo</span> <span class="re0">$navChildren</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+                        <span class="kw1">echo</span> <span class="st_h">'&lt;/div&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="br0">&#125;</span>
+&nbsp;
+        <span class="sy1">?&gt;</span>
+&nbsp;
+&nbsp;</pre>
+</div>
+<p>
+Once the csv files are created, run the R Studio code below (on your computer) and you get a network.html file. Upload the html file in .data/forms and the website will use it to create all the networks in every page (this steps could be automatised if you have access to R on your server, always with Debian). Lastly I modified part of the JS of Visnetwork in order to hide the dropdown menu.
+</p>
+<p><a class="folder" href="#folded_79286c1da49ef730a2332eb35c593d6a_4">R code </a></p><div class="folded hidden" id="folded_79286c1da49ef730a2332eb35c593d6a_4"><pre class="code r"># minimal examplelibrary('visNetwork') 
+library('visNetwork') 
+library(igraph)
+&nbsp;
+nodes &lt;- data.frame(read.csv(file = '/Users/Lancelot/Downloads/csv/nodes.csv'))
+links &lt;- data.frame(read.csv(file = '/Users/Lancelot/Downloads/csv/links.csv'))
+&nbsp;
+graph &lt;- graph.data.frame(links, directed = T)
+&nbsp;
+degree_value &lt;- degree(graph, mode = &quot;total&quot;)
+nodes$value &lt;- degree_value[match(nodes$id, names(degree_value))]
+&nbsp;
+nodes[is.na(nodes)] &lt;- 0
+&nbsp;
+nodes$shadow &lt;- TRUE # Nodes will drop shadow
+links$arrows &lt;- &quot;to&quot; # arrows: 'from', 'to', or 'middle'
+&nbsp;
+network &lt;- visNetwork(nodes, links, height = &quot;400px&quot;, width = &quot;100%&quot;,physics=T) %&gt;% 
+    visPhysics(solver = &quot;forceAtlas2Based&quot;, forceAtlas2Based = list(gravitationalConstant = -30))%&gt;%
+    visLayout(randomSeed = 12)%&gt;%
+    visNodes(size = 30)%&gt;% 
+    visOptions(highlightNearest = TRUE, 
+               nodesIdSelection = list(selected = &quot;4 Noble Truths&quot;,     style = &quot;display:none&quot;))%&gt;%
+    visLayout(randomSeed = 123) %&gt;%
+    visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
+&nbsp;
+visSave(network, file = &quot;/Users/Lancelot/Downloads/test2/network.html&quot;, selfcontained = F)
+&nbsp;
+# 4 Noble Truths is used as an anchor and is changed via php in the website.</pre>
+</div>
+</div>

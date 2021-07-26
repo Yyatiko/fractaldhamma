@@ -1,0 +1,354 @@
+====== LICENSE & NOTICE ======
+
+//Except where otherwise noted, content on this wiki is licensed under the following license: CC Attribution-Noncommercial-Share Alike 4.0 International//
+
+This site use the [[https://www.dokuwiki.org/dokuwiki|dokuwiki]] software with a modified [[https://www.dokuwiki.org/template:prsnl10|prsnl10 template]].
+
+All the sutta comes from the translations by Ajahn Thanissaro [[http://www.dhammatalks.org|dhammatalks.org]] and access to insight.
+
+Other inspirations are from :
+
+  * [[http://buddhadust.net/|Buddhadust]]
+  * [[https://en.wikipedia.org/wiki/Outline_of_Buddhism|Outilne of Buddhisme (wikipedia)]]
+  * [[https://www.accesstoinsight.org/ptf/index.html|Access to Insight, A path to Freedom]]
+  * The Wings to Awakening
+  * The Shape of Suffering
+  * The Paradox of Becoming
+  * Passage fractal Daniel Ingram
+  * Espace cohérent de pensée clot par opération de pensée. (système de croyance) voir Idriss Aberkane
+
+====== How it Works (old version) ======
+
+The principal code that create the different files is matrix.php. It is executed via the plugin [[https://www.dokuwiki.org/plugin:inclform|include form]] when the page [[matrix]] is updated (it can be executed on every page to instantly create the side menus if added to main.php). It creates two csv files ({{:nodes.csv}} & {{:links.csv}}), two php files in the folder ./data/forms and show the table in [[matrix]]. The csv files are used to run a code in [[https://www.r-project.org/|R]] to create the network image (thanks to [[https://kateto.net/network-visualization|kateto.net]]) and the php files navChildren.php and navParent.php contain the array used by main.php to display the two column on each side of every page. main.php is the main page used to create pages from the prsnl10 template. 
+
+++++ matrix.php |
+
+<code php>
+
+<?php
+
+include ("./data/forms/exclude.php");
+
+$myfile = fopen("./data/forms/navChildren.php", "w") or die("Unable to open file!");
+
+$mylinks = fopen("./data/csv/links.csv", "w") or die("Unable to open file!");
+$mynodes = fopen("./data/csv/nodes.csv", "w") or die("Unable to open file!");
+
+$regex = "/(?<=(\[\[))(.*?)(?=(\|))/";           // all links in $page
+$regex2 = "/(?<=(====== ))(.*?)(?=( ======))/";  // $page title
+
+$pages = glob("./data/pages/*.txt");
+natsort($pages);
+
+// Children loop
+
+echo "<h3>Children</h3>" ;
+
+fwrite($myfile,  '<?php $navChildren=array(' ) ;
+
+fwrite($mynodes,  'id,label,path' ) ;
+fwrite($mynodes,  "\n" ) ;
+
+fwrite($mylinks,  'from,to' ) ;
+fwrite($mylinks,  "\n" ) ;
+
+foreach ($pages as $page)
+{
+
+  if (in_array($page, $exclude))
+  {
+        continue;
+  }
+    
+  $contents = file_get_contents($page);
+  $pagename=str_replace('./data/pages/','',$page); 
+  $pagename=str_replace('.txt','',$pagename); 
+ 
+  preg_match_all($regex, $contents, $matches, PREG_SET_ORDER); //links in page
+  preg_match_all($regex2, $contents, $matches2, PREG_SET_ORDER); // title of page
+  
+  //echo '</br> Path = '.$page.'</br>';
+  //echo 'First header = '.$matches2[0][0].'</br>';
+  echo '</br><a href="'.$pagename.'">'.$matches2[0][0].'</a></br>';
+  
+  $title = $matches2[0][0];
+  
+  fwrite($myfile,  "'".$page."'=>'" ) ;
+  fwrite($mynodes,  $title.','.$title.','.$pagename) ;
+  fwrite($mynodes,  "\n" ) ;
+
+  if(count($matches)==0) fwrite($myfile,  "'");
+  foreach ($matches as $match)
+  {
+    // $match[0] contains the entire match as described above
+    //echo '->';
+    $undermatch = preg_replace('/\s+/', '_', $match[0]);
+    $undermatch = strtolower($undermatch);
+    //echo $undermatch;
+    //echo "</br>";
+    
+    $pathsubpage = './data/pages/'.$undermatch.'.txt';
+    
+    $subpagecontents = file_get_contents($pathsubpage);                        // load subpage contents
+    preg_match_all($regex2, $subpagecontents, $matches3, PREG_SET_ORDER);
+    $titlesubpagepage = $matches3[0][0];
+    
+    echo '&nbsp&nbsp&nbsp-> ';
+    echo '<a href='.$undermatch.'>'.$titlesubpagepage.'</a></br>';
+    
+    //fwrite($myfile, '<a href=doku.php?id='.$undermatch.'>'.$titlesubpagepage.'</a>');
+    fwrite($myfile, '<a href='.$undermatch.'>'.$titlesubpagepage.'</a>');
+    fwrite($myfile, "\n");
+    
+    fwrite($mylinks,  $title.','.$titlesubpagepage) ;
+    fwrite($mylinks,  "\n" ) ;
+    
+    if( !next( $matches ) ) {
+        fwrite($myfile,  "'" );
+    }
+    else fwrite($myfile,  '<br/><br/>' ) ;
+   
+    
+    }
+
+  
+  
+  fwrite($myfile,  ',' ) ;
+  fwrite($myfile, "\n");
+  fwrite($myfile, "\n");
+  
+}
+
+fwrite($myfile,  ') ?>' ) ;
+  
+fclose($mylinks);
+fclose($mynodes);  
+fclose($myfile);
+
+  // Parent loop
+  
+echo "</br></br><h3>Parent</h3>" ;
+
+  
+$myfile2 = fopen("./data/forms/navParent.php", "w") or die("Unable to open file!");
+  
+fwrite($myfile2,  '<?php $navParent=array(' ) ;
+
+foreach ($pages as $page)
+{
+    if (in_array($page, $exclude))
+       {
+           continue;
+       }
+       
+    $pagename=str_replace('./data/pages/','',$page); 
+    $pagename=str_replace('.txt','',$pagename); 
+       
+    fwrite($myfile2,  "'".$page."'=>'" ) ;   
+    //echo $page;
+    //echo "</br>" ;
+    
+    $contents3 = file_get_contents($page);
+    preg_match_all($regex2, $contents3, $matchesP3, PREG_SET_ORDER);// title of page
+    $titleP3 = $matchesP3[0][0]; 
+     
+    echo '</br><a href="'.$pagename.'">'.$titleP3.'</a></br>'; 
+     
+    foreach ($pages as $page2)
+    {
+    
+       if (in_array($page2, $exclude))
+       {
+           continue;
+       }
+       
+       $contents2 = file_get_contents($page2);
+       $page2name=str_replace('./data/pages/','',$page2); //get pagename
+       $page2name=str_replace('.txt','',$page2name); 
+
+       
+       preg_match_all($regex, $contents2, $matchesP, PREG_SET_ORDER); // links in page2
+       preg_match_all($regex2, $contents2, $matchesP2, PREG_SET_ORDER);// title of page2
+       
+       $titleP = $matchesP2[0][0];   // page qui pourrait soucrer
+       $undertitleP = preg_replace('/\s+/', '_', $titleP);
+
+       //if(count($matchesP)==0) fwrite($myfile2,  "'");
+       foreach ($matchesP as $matchP) // cherche dans les liens de la page
+       {
+
+          $undermatchP = preg_replace('/\s+/', '_', $matchP[0]);
+          $undermatchP = strtolower($undermatchP);
+          $pathsubpageP = './data/pages/'.$undermatchP.'.txt';
+          
+            
+          if($pathsubpageP == $page) // si elle source page
+          {
+              echo '&nbsp&nbsp&nbsp<- ';
+              //echo $titleP; 
+              //echo '('.$page2.')';
+              echo '<a href='.$page2name.'>' .$titleP. '</a>';
+              echo '</br>';
+              
+              //fwrite($myfile2, '<a href=doku.php?id=' .$page2name.'>' .$titleP. '</a>');
+              fwrite($myfile2, '<a href='.$page2name.'>' .$titleP. '</a>');
+              fwrite($myfile2, "\n");
+              fwrite($myfile2,  '<br/><br/>' ) ;
+          }
+          
+          
+       }
+       
+       //if( !next( $pages ) ) {
+       //       fwrite($myfile2,  "'" );
+       //}
+       
+     
+   }
+   
+   fwrite($myfile2,  "'," ) ;
+   fwrite($myfile2, "\n");
+   fwrite($myfile2, "\n");
+}
+
+fwrite($myfile2,  ') ?>' ) ;
+
+fclose($myfile2);
+
+
+?>
+
+</code>
+
+++++
+
+The main.php file is the one that is used to create pages in the template prsnl10. I added two parts to it.
+
+
+++++ in main.php |
+<code php>
+
+<?php
+        
+        $do = $_GET["do"];
+        
+
+        
+        if($do != "admin"){
+        
+                $idpage = $_GET["id"];
+                if ($idpage == "") $idpage = "start";
+                $name = './data/pages/'.$idpage.'.txt';
+               
+                echo '<a id="dokuwiki__top"></a>';
+                
+                // Matrix head //
+                
+                   // get page name //
+                
+                $contents0 = file_get_contents($name);
+                $regex2 = "/(?<=(====== ))(.*?)(?=( ======))/";  // $page title
+                preg_match_all($regex2, $contents0, $matches2, PREG_SET_ORDER); // title of page
+                $title = $matches2[0][0];
+                  
+                   // show html matric head // 
+             
+                echo '<div id="headMatrix" style = "text-align: center;">';
+                
+                $contents = file_get_contents("./data/forms/network.html");
+                
+                $contents = str_replace('"selected":"4 Noble Truths"', '"selected":"'.$title.'"', $contents); //ny default it focus on the 4 Noble Truths, what a good computer...
+                $contents = str_replace("network_files", "./lib/tpl/prsnl10/js/network_files", $contents); //ny default it focus on the 4 Noble Truths, what a good computer...                
+             
+                echo $contents;
+                
+                echo '</div>';
+                
+                // right nav//
+                
+                echo '<div id="nav0" style = "text-align: right;">';
+                //echo 'navP';
+                //print_r($_GET);
+       
+
+                include("./data/forms/navParent.php");
+                if (isset($navParent[$name])) echo $navParent[$name];
+
+                echo '</div>';
+                
+                }
+       
+        ?>
+
+</code>
+
+++++
+
+The second one 
+
+++++ in main.php |
+
+<code php>
+
+<?php
+         
+                if($do != "admin"){
+                
+                        echo '<div id="nav0">';
+                        //echo $_GET["id"];
+                
+                        $idpage = $_GET["id"];
+                        $name = './data/pages/'.$idpage.'.txt';
+        
+                        include("./data/forms/navChildren.php");
+                        if (isset($navChildren[$name])) echo $navChildren[$name];
+                        
+                        echo '</div>';
+                
+                }
+                
+        ?>
+        
+ </code>
+
+++++
+
+Once the csv files are created, run the R Studio code below (on your computer) and you get a network.html file. Upload the html file in .data/forms and the website will use it to create all the networks in every page (this steps could be automatised if you have access to R on your server, always with Debian). Lastly I modified part of the JS of Visnetwork in order to hide the dropdown menu.
+
+++++ R code |
+
+<code r>
+
+# minimal examplelibrary('visNetwork') 
+library('visNetwork') 
+library(igraph)
+
+nodes <- data.frame(read.csv(file = '/Users/Lancelot/Downloads/csv/nodes.csv'))
+links <- data.frame(read.csv(file = '/Users/Lancelot/Downloads/csv/links.csv'))
+
+graph <- graph.data.frame(links, directed = T)
+
+degree_value <- degree(graph, mode = "total")
+nodes$value <- degree_value[match(nodes$id, names(degree_value))]
+
+nodes[is.na(nodes)] <- 0
+
+nodes$shadow <- TRUE # Nodes will drop shadow
+links$arrows <- "to" # arrows: 'from', 'to', or 'middle'
+
+network <- visNetwork(nodes, links, height = "400px", width = "100%",physics=T) %>% 
+    visPhysics(solver = "forceAtlas2Based", forceAtlas2Based = list(gravitationalConstant = -30))%>%
+    visLayout(randomSeed = 12)%>%
+    visNodes(size = 30)%>% 
+    visOptions(highlightNearest = TRUE, 
+               nodesIdSelection = list(selected = "4 Noble Truths",     style = "display:none"))%>%
+    visLayout(randomSeed = 123) %>%
+    visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
+    
+visSave(network, file = "/Users/Lancelot/Downloads/test2/network.html", selfcontained = F)
+
+# 4 Noble Truths is used as an anchor and is changed via php in the website.
+
+</code>
+
+++++

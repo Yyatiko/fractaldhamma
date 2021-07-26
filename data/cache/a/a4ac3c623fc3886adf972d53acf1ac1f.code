@@ -1,0 +1,29 @@
+# minimal examplelibrary('visNetwork') 
+library('visNetwork') 
+library(igraph)
+&nbsp;
+nodes &lt;- data.frame(read.csv(file = '/Users/Lancelot/Downloads/csv/nodes.csv'))
+links &lt;- data.frame(read.csv(file = '/Users/Lancelot/Downloads/csv/links.csv'))
+&nbsp;
+graph &lt;- graph.data.frame(links, directed = T)
+&nbsp;
+degree_value &lt;- degree(graph, mode = &quot;total&quot;)
+nodes$value &lt;- degree_value[match(nodes$id, names(degree_value))]
+&nbsp;
+nodes[is.na(nodes)] &lt;- 0
+&nbsp;
+nodes$shadow &lt;- TRUE # Nodes will drop shadow
+links$arrows &lt;- &quot;to&quot; # arrows: 'from', 'to', or 'middle'
+&nbsp;
+network &lt;- visNetwork(nodes, links, height = &quot;400px&quot;, width = &quot;100%&quot;,physics=T) %&gt;% 
+    visPhysics(solver = &quot;forceAtlas2Based&quot;, forceAtlas2Based = list(gravitationalConstant = -30))%&gt;%
+    visLayout(randomSeed = 12)%&gt;%
+    visNodes(size = 30)%&gt;% 
+    visOptions(highlightNearest = TRUE, 
+               nodesIdSelection = list(selected = &quot;4 Noble Truths&quot;,     style = &quot;display:none&quot;))%&gt;%
+    visLayout(randomSeed = 123) %&gt;%
+    visInteraction(dragNodes = T, dragView = FALSE, zoomView = FALSE)
+&nbsp;
+visSave(network, file = &quot;/Users/Lancelot/Downloads/test2/network.html&quot;, selfcontained = F)
+&nbsp;
+# 4 Noble Truths is used as an anchor and is changed via php in the website.

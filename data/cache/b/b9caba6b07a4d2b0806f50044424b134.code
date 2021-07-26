@@ -1,0 +1,20 @@
+<span class="kw2">&lt;?php</span>
+&nbsp;
+                <span class="kw1">if</span><span class="br0">&#40;</span><span class="re0">$do</span> <span class="sy0">!=</span> <span class="st0">&quot;admin&quot;</span><span class="br0">&#41;</span><span class="br0">&#123;</span>
+&nbsp;
+                        <span class="kw1">echo</span> <span class="st_h">'&lt;div id=&quot;nav0&quot;&gt;'</span><span class="sy0">;</span>
+                        <span class="co1">//echo $_GET[&quot;id&quot;];</span>
+&nbsp;
+                        <span class="re0">$idpage</span> <span class="sy0">=</span> <span class="re0">$_GET</span><span class="br0">&#91;</span><span class="st0">&quot;id&quot;</span><span class="br0">&#93;</span><span class="sy0">;</span>
+                        <span class="re0">$name</span> <span class="sy0">=</span> <span class="st_h">'./data/pages/'</span><span class="sy0">.</span><span class="re0">$idpage</span><span class="sy0">.</span><span class="st_h">'.txt'</span><span class="sy0">;</span>
+&nbsp;
+                        <span class="kw1">include</span><span class="br0">&#40;</span><span class="st0">&quot;./data/forms/navChildren.php&quot;</span><span class="br0">&#41;</span><span class="sy0">;</span>
+                        <span class="kw1">if</span> <span class="br0">&#40;</span><a href="http://www.php.net/isset"><span class="kw3">isset</span></a><span class="br0">&#40;</span><span class="re0">$navChildren</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="br0">&#41;</span><span class="br0">&#41;</span> <span class="kw1">echo</span> <span class="re0">$navChildren</span><span class="br0">&#91;</span><span class="re0">$name</span><span class="br0">&#93;</span><span class="sy0">;</span>
+&nbsp;
+                        <span class="kw1">echo</span> <span class="st_h">'&lt;/div&gt;'</span><span class="sy0">;</span>
+&nbsp;
+                <span class="br0">&#125;</span>
+&nbsp;
+        <span class="sy1">?&gt;</span>
+&nbsp;
+&nbsp;

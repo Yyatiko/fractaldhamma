@@ -1,26 +1,31 @@
+[[dhamma:dhamma|{{ :capture_d_e_cran_2021-07-26_a_18.03.17.png?nolink&200 |}}]]
+[[dependant_arising:dependant_arising|{{ :capture_d_e_cran_2021-07-26_a_20.59.12.png?direct&200|}}
+]]
+[[patimokkha:patimokkha|{{:capture_d_e_cran_2021-07-26_a_20.59.08.png?nolink&200| }}
+]]
+
 \\
-\\
-\\
-====== Home ======
+
+===== Fractal10 =====
 
 Welcome to **Fractal10** DokuWiki Template. 
 
 Tired of making non linear mindmap by yourself ? This DokuWiki template create automatically interactive networks using Rscript and Visnetwork library for every namespace in your wiki. 
 
-  * Nodes in the network correspond to pages in the namespaces. 
-  * Edges of the network correspond to internal links between pages. 
-  * There is also two side columns on every page displaying parent pages on the left and child pages on the right. 
+  * Network's nodes correspond to pages in the namespaces. 
+  * Network's edges correspond to internal links between pages. 
+  * There are two side columns on every page displaying parent pages on the left and child pages on the right. 
 
-The network builds up as you create you wiki pages and connect them with internal links. It uses community algorithm to allocates different collors to nodes and the sizes of nodes are according to their degree, i.e. the number of edges they connect to. 
+The network builds up as you create you wiki pages and connect them with internal links. It uses community algorithm to allocates different collors to nodes. The sizes of nodes are according to their degree, i.e. the number of edges they connect to. 
 
 ===== Notes =====
 
   *   Use the Update **Network button** in footer to create a new network and update links.
   *   The **Top Bar** represent the different namespaces.
-  *   The **Sitemap** button in footer allows to access all pages, even hiden one.
+  *   The **Sitemap** button in footer allows to access all pages, even hiden ones.
   *   Click on a node to access node page.
-  *   Click anywhere inside the network to deselct the current node
-  *   A namespace can have a exclude page that contains some settings.
+  *   Click anywhere inside the network to deselect the current node
+  *   A namespace can have a exclude page that contains some settings. (needs update)
   *   To modify site map, edit : [[sitemap|]]
   *   To modify top bar, edit : [[topbar|]]
 
@@ -29,5 +34,79 @@ The network builds up as you create you wiki pages and connect them with interna
   - Creat network for root level
   - Merge setting page with exclude page
   - Have different algirtm available in setting
-  - Have settings for zoom and drag
+  - Have settings for zoom, drag, size, etc.
   - Edit footer
+  - Fix new folder procedure
+  - Fix nice URLs
+  - Remove anoying pop up window when hovering nodes
+  - remove top sentences on edit pages
+  - Clean up CSS for navbar and topbar
+  - Admin page and other need alignment
+  - Topbar setting
+
+===== Ancienne introduciton =====
+
+[[credit|Ancien Crédit]]
+
+Nous vivons dans un monde fractal. Ce site est une représentation de l'expérience de vie et de la création de son réseau de connaissance. Chaque page est un réseau de “neurones” et chaque lien un neurone pointant vers un différent réseau.
+
+Une page de ce site, un neurone, peut être vu comme un réseau de sous-neurone complet qui forme une connaissance spécifique. En effet, un neurone est une capsule unité d'information. Influx nerveux similaire à un bit dans un ordinateur. Bit de conscience phénoménologique. Dans notre experience de vie, elle représente…
+
+==== Pour utiliser le wiki ====
+
+   Sudo apachectl start
+
+[[http://localhost/~lancelot/GitHub/fractaldhamma/doku.php?id=start
+]]
+==== Pour nouveau dossier ====
+
+   sudo chmod -R 777 "/Users/Lancelot/Sites/"
+
+==== Add special character in pali for network ====
+
+Add line to function in **myfinction.php** under
+
+  function utf8hex ($string) {
+  $string = str_replace('<c4><81>','ā',$string);    
+  $string = str_replace('<e1><b9><ad>','ṭ',$string);    
+  $string = str_replace('<e1><b9><85>','ṅ',$string);    
+  return ($string);
+   }
+
+==== Enable/disable  navchild and navparent side bars ====
+
+In **main.php** remove comment in two places in php before and after main centent.
+
+In **prsnl10_screen.css** change :
+
+	dokuwiki div#content {
+		margin to 5px
+		 inline block 
+
+==== To chage topbar behaviour ====
+
+change js script at the end of **main.php**
+
+==== To debbug network ====
+
+  - main.php -> uncomment matrixer line 153
+  - Myfunction.php -> uncomment last two lines 383 384
+  - Print stuff in the script.R of the user folder. 
+  - Print stuff in php of the matrixes
+  - Use <pre> print_r($array) </pre> for nice layout
+
+===== How it works =====
+
+When clicking **Update Network** button in footer (from **main.php**), it executes **matrixerNyNameSpace()** from **myFunctions.php**. It then goes trough the all namespace pages and creates in the namespaces folders their own :
+
+  - navChildren.php (contains the code for right nav menu)
+  - navParent.php (contains the code for left nav menu)
+  - links.csv (data for creating network)
+  - nodes.csv
+
+And then use **script.R** from user folder to adapt it and create a personalized one in namespace folder and creates :
+
+  - script.R
+  - network.html
+
+The network is then display in **main.php** with nav column on each side.

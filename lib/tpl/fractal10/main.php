@@ -124,6 +124,9 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
         echo " class=\"admin\"";
     } ?>>
 
+
+
+
     <!-- load function -->
 
     <?php
@@ -159,16 +162,28 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
 
     ?>
 
+    <!-- add title -->
 
-
-
-    <!-- add top bar -->
-
-      <div class="navbar"> <!-- if used with topbar class, need ul li in topbar page -->
-          <?php tpl_include_page('topbar') /* includes the wiki page "topbar" */ ?>
+      <div class="logo">
+          <a href="doku.php?id=start"> <?php echo $conf["title"]; ?> </a>
       </div>
 
 
+    <!-- add top bar V1
+
+      <div class="navbar">
+          <?php tpl_include_page('topbar') /* includes the wiki page "topbar" */ ?>
+      </div>
+
+      -->
+
+       <!-- if used with navbar class, need spaced links -->
+
+    <!-- add top bar V2-->
+
+      <div class="topbar"> <!-- if used with topbar class, need ul li in topbar page -->
+          <?php tpl_include_page('topbar') /* includes the wiki page "topbar" */ ?>
+      </div>
 
     <!-- start header -->
 
@@ -330,6 +345,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
                                     margin  : 0;
                                     background: none;
                                     padding: 0;
+                                    color: #2b85a2;
                                     "/>
                 </form>
 
@@ -368,7 +384,7 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
                     }
                     if (!empty($INFO["isadmin"]) ||  //$INFO comes from DokuWiki core
                         !empty($INFO["ismanager"])){
-                        echo "&#160;|&#160;";
+                        echo "&#160;|</br>&#160;";
                         tpl_actionlink("admin");
                     }
                     if (!empty($loginname) &&
@@ -384,8 +400,9 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
             </div>
             <div class="clearer"></div>
             <div id="tmpl_footer_metainfo">
-                <!-- Please do NOT remove the following prsnl10 and/or DokuWiki link/notice. Thank you. :-) -->
-                <a href="https://www.dokuwiki.org/template:prsnl10" target="_blank"<?php echo ((cleanID(getID()) === "start") ? "" : " rel=\"nofollow\"") ?>>prsnl10 on DW</a> under the hood
+                <!-- Please do NOT remove the followi<!-- Please do NOT remove the following prsnl10 and/or DokuWiki link/notice. Thank you. :-) -->
+                <!-- <a href="https://www.dokuwiki.org/template:prsnl10" target="_blank"<?php echo ((cleanID(getID()) === "start") ? "" : " rel=\"nofollow\"") ?>>prsnl10 on DW</a> under the hood-->
+                <a href="doku.php?id=credit" <?php echo ((cleanID(getID()) === "start") ? "" : " rel=\"nofollow\"") ?>>LICENSE & NOTICE</a>
                 <?php
                 if(!empty($INFO["exists"]) &&
                    tpl_getConf("prsnl10_showpageinfo")) {
@@ -456,6 +473,26 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
     }
     ?>
 
+
+
 </div>
+
+<!-- script for top navbar JS
+
+<script>
+var prevScrollpos = window.pageYOffset;
+window.onscroll = function() {
+var currentScrollPos = window.pageYOffset;
+  if (prevScrollpos > currentScrollPos) {
+    document.getElementsByClassName("navbar")[0].style.top = "0";
+  } else {
+    document.getElementsByClassName("navbar")[0].style.top = "-50px";
+  }
+  prevScrollpos = currentScrollPos;
+}
+</script>
+
+-->
+
 </body>
 </html>
