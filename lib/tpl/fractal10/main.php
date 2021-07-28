@@ -110,6 +110,16 @@ if (tpl_getConf("prsnl10_loaduserjs") && file_exists(DOKU_TPLINC."user/user.js")
 <!--[if lt IE 7]><style type="text/css">img { behavior: url(<?php echo DOKU_TPL; ?>js/iepngfix/iepngfix.htc); }</style><![endif]-->
 </head>
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6Z3R9XLBNE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6Z3R9XLBNE');
+</script>
+
 <body>
 <div id="pagewrap"<?php
     if ($ACT !== "show" && //speed up: check most common action first
